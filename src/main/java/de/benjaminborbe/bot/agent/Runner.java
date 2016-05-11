@@ -36,15 +36,17 @@ public class Runner {
     final NSQLookup lookup = new DefaultNSQLookup();
     lookup.addLookupAddress(nsqLookupdAddress.getName(), nsqLookupdAddress.getPort());
     final NSQConsumer consumer = new NSQConsumer(lookup, Topic.REQUEST.getName(), botname, (message) -> {
-      logger.debug("process message: {}", message);
       try {
+        logger.debug("request: {}", new String(message.getMessage(), "UTF-8"));
         final Request request = jsonToRequestMapper.map(message.getMessage());
         final Collection<Response> responses = messageHandler.HandleMessage(request);
         logger.debug("go {} responses", responses.size());
         for (final Response response : responses) {
           try {
             response.setTicket(request.getTicket());
-            producer.produce(Topic.RESPONSE.getName(), responseToJsonMapper.map(response));
+            final byte[] content = responseToJsonMapper.map(response);
+            logger.debug("response: {}", new String(content, "UTF-8"));
+            producer.produce(Topic.RESPONSE.getName(), content);
           } catch (final Exception e) {
             logger.warn("send response failed", e);
           }
