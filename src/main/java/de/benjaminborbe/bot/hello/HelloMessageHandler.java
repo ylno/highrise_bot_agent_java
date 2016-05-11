@@ -1,6 +1,5 @@
 package de.benjaminborbe.bot.hello;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -20,7 +19,11 @@ public class HelloMessageHandler implements MessageHandler {
   public Collection<Response> HandleMessage(final Request request) {
     if (request.getMessage().equals("hello " + request.getBot())) {
       final Response response = new Response();
-      response.setMessage("hello");
+      if (request.getFrom() != null) {
+        response.setMessage(String.format("hello %s from java", request.getFrom().getUsername()));
+      } else {
+        response.setMessage("hello from java");
+      }
       return Collections.singletonList(response);
     }
     return Collections.emptyList();
