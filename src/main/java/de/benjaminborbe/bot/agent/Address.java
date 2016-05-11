@@ -20,6 +20,8 @@ public class Address {
   }
 
   public static Address parse(final String address) {
+    if (address == null)
+      throw new IllegalArgumentException("parameter address missing");
     final String[] parts = address.split(":", 2);
     return new Address(parts[0], Integer.parseInt(parts[1]));
   }
