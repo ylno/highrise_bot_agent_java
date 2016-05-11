@@ -30,7 +30,7 @@ public class ResponseToJsonMapperTest {
     response.setReplay(true);
     final byte[] map = responseToJsonMapper.map(response);
     final Response value = objectMapper.readValue(map, Response.class);
-    assertThat(value.getReplay(), is(true));
+    assertThat(value.isReplay(), is(true));
   }
 
   @Test
@@ -42,6 +42,6 @@ public class ResponseToJsonMapperTest {
     response.setReplay(false);
     final byte[] map = responseToJsonMapper.map(response);
     final Response value = objectMapper.readValue(map, Response.class);
-    assertThat(value.getReplay(), is(false));
+    assertThat(value.isReplay(), is(false));
   }
 }

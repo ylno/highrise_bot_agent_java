@@ -16,7 +16,15 @@ public class Response implements Serializable {
 
   private String message;
 
-  private Boolean replay;
+  private boolean replay;
+
+  public boolean isReplay() {
+    return replay;
+  }
+
+  public void setReplay(final boolean replay) {
+    this.replay = replay;
+  }
 
   public String getMessage() {
     return message;
@@ -26,13 +34,6 @@ public class Response implements Serializable {
     this.message = message;
   }
 
-  public Boolean getReplay() {
-    return replay;
-  }
-
-  public void setReplay(final Boolean replay) {
-    this.replay = replay;
-  }
 
   public String getTicket() {
     return ticket;
