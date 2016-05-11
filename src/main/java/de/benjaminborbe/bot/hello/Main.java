@@ -8,7 +8,6 @@ import com.google.inject.Injector;
 
 import de.benjaminborbe.bot.agent.Address;
 import de.benjaminborbe.bot.agent.runner.Runner;
-import de.benjaminborbe.bot.hello.guice.GuiceModule;
 
 public class Main {
 

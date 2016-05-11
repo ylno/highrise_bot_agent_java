@@ -1,4 +1,4 @@
-package de.benjaminborbe.bot.hello.guice;
+package de.benjaminborbe.bot.hello;
 
 import com.google.inject.AbstractModule;
 
