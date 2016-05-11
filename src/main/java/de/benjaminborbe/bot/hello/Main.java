@@ -18,8 +18,8 @@ public class Main {
   public static void main(final String[] args) {
     try {
       logger.debug("bot started");
-      final Address nsqdAddress = Address.parse(System.getenv("NSQD_ADDRESS"));
-      final Address nsqLookupdAddress = Address.parse(System.getenv("NSQ_LOOKUPD_ADDRESS"));
+      final Address nsqdAddress = Address.fromEnv("NSQD_ADDRESS");
+      final Address nsqLookupdAddress = Address.fromEnv("NSQ_LOOKUPD_ADDRESS");
       final Injector injector = Guice.createInjector(new GuiceModule());
       final Runner instance = injector.getInstance(Runner.class);
       System.out.println("starting bot");

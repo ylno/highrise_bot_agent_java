@@ -36,10 +36,11 @@ public class Runner {
     final NSQLookup lookup = new DefaultNSQLookup();
     lookup.addLookupAddress(nsqLookupdAddress.getName(), nsqLookupdAddress.getPort());
     final NSQConsumer consumer = new NSQConsumer(lookup, Topic.REQUEST.getName(), botname, (message) -> {
-      logger.debug("received: {}", message);
+      logger.debug("process message: {}", message);
       try {
         final Request request = jsonToRequestMapper.map(message.getMessage());
         final Collection<Response> responses = messageHandler.HandleMessage(request);
+        logger.debug("go {} responses", responses.size());
         for (final Response response : responses) {
           try {
             response.setTicket(request.getTicket());
@@ -49,8 +50,9 @@ public class Runner {
           }
         }
       } catch (final IOException e) {
-        logger.warn("parse request json failed", e);
+        logger.warn("fromEnv request json failed", e);
       }
+      logger.debug("process message finsihed");
       message.finished();
     });
     consumer.start();

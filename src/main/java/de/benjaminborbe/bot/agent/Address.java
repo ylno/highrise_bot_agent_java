@@ -19,10 +19,15 @@ public class Address {
     this.port = port;
   }
 
-  public static Address parse(final String address) {
+  public static Address fromEnv(final String env) {
+    final String address = System.getenv(env);
     if (address == null)
-      throw new IllegalArgumentException("parameter address missing");
-    final String[] parts = address.split(":", 2);
-    return new Address(parts[0], Integer.parseInt(parts[1]));
+      throw new IllegalArgumentException(String.format("env %s missing", env));
+    try {
+      final String[] parts = address.split(":", 2);
+      return new Address(parts[0], Integer.parseInt(parts[1]));
+    } catch (final Exception e) {
+      throw new IllegalArgumentException(String.format("parse %s=%s failed", env, address));
+    }
   }
 }
