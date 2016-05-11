@@ -14,6 +14,7 @@
 		<slf4j.version>1.5.6</slf4j.version>
 		<log4j.version>1.2.14</log4j.version>
 		<slf4j.impl>slf4j-log4j12</slf4j.impl>
+		<jackson.version>2.7.3</jackson.version>
 	</properties>
 	<build>
 		<finalName>bot-agent</finalName>
@@ -106,5 +107,33 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- JSON Mapper Jackson -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jdk8</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
 	</dependencies>
 </project>

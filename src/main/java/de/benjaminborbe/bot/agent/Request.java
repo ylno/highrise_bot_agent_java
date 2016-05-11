@@ -9,29 +9,66 @@ package de.benjaminborbe.bot.agent;
 // From *User `json:"from"`
 // Bot string `json:"bot"`
 // }
-//
-// type User struct {
-// ID string `json:"id"`
-// UserName string `json:"username"`
-// DisplayName string `json:"displayname"`
-// }
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Request implements Serializable {
 
-  private static final long serialVersionUID = -5921065954053277024L;
+  private static final long serialVersionUID = 8497755180200956949L;
+
+  private String ticket;
+
+  @JsonProperty("private")
+  private Boolean priv;
+
+  private String authToken;
 
   private String message;
 
+  private RequestUser from;
+
   private String bot;
+
+  public String getAuthToken() {
+    return authToken;
+  }
 
   public String getBot() {
     return bot;
   }
 
+  public RequestUser getFrom() {
+    return from;
+  }
+
+  public Boolean getPriv() {
+    return priv;
+  }
+
+  public void setAuthToken(final String authToken) {
+    this.authToken = authToken;
+  }
+
   public void setBot(final String bot) {
     this.bot = bot;
+  }
+
+  public void setFrom(final RequestUser from) {
+    this.from = from;
+  }
+
+  public void setPriv(final Boolean priv) {
+    this.priv = priv;
+  }
+
+  public void setTicket(final String ticket) {
+    this.ticket = ticket;
+  }
+
+  public String getTicket() {
+    return ticket;
   }
 
   public String getMessage() {

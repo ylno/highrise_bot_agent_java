@@ -7,7 +7,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import de.benjaminborbe.bot.agent.Address;
-import de.benjaminborbe.bot.agent.runner.Runner;
+import de.benjaminborbe.bot.agent.Runner;
 
 public class Main {
 
