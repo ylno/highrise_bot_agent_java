@@ -11,9 +11,12 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<slf4j.version>1.5.6</slf4j.version>
+		<log4j.version>1.2.14</log4j.version>
+		<slf4j.impl>slf4j-log4j12</slf4j.impl>
 	</properties>
 	<build>
-		<finalName>jmx-memory</finalName>
+		<finalName>bot-agent</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -81,6 +84,21 @@
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 			<version>4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.brainlag</groupId>
+			<artifactId>nsq-client</artifactId>
+			<version>1.0.0.RC2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>${slf4j.impl}</artifactId>
+			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
