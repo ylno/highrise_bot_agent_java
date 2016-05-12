@@ -135,5 +135,12 @@
 			<version>${jackson.version}</version>
 		</dependency>
 
+
+		<dependency>
+			<groupId>com.algaworks</groupId>
+			<artifactId>highrise-java-api</artifactId>
+			<version>1.0.1-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 </project>
