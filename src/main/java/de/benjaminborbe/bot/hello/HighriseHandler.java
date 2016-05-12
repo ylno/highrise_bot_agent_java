@@ -9,14 +9,15 @@ import de.benjaminborbe.bot.agent.MessageHandler;
 import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.agent.Response;
 
-public class HelloMessageHandler implements MessageHandler {
+public class HighriseHandler implements MessageHandler {
 
   @Inject
-  public HelloMessageHandler() {
+  public HighriseHandler() {
   }
 
   @Override
   public Collection<Response> HandleMessage(final Request request) {
+
     if (request.getMessage().equals("hello " + request.getBot())) {
       final Response response = new Response();
       if (request.getFrom() != null) {

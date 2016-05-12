@@ -16,6 +16,15 @@
 		<slf4j.impl>slf4j-log4j12</slf4j.impl>
 		<jackson.version>2.7.3</jackson.version>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>git-ylno</id>
+			<name>ylno's Git based repo</name>
+			<url>https://github.com/ylno/maven-repo/raw/master/</url>
+		</repository>
+	</repositories>
+
 	<build>
 		<finalName>bot-agent</finalName>
 		<resources>
