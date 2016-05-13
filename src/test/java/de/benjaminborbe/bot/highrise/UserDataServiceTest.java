@@ -18,10 +18,10 @@ public class UserDataServiceTest {
     config.setAuthPassword("test123");
 
     UserDataService userDataService = new UserDataService(config, new ObjectMapper());
-    userDataService.storeUserName("hans", "hansuser");
-    userDataService.storeToken("hans", "hanstoken");
+    userDataService.storeUserName("dGVsZWdyYW06NzYxMzcyODE=", "hansuser");
+    userDataService.storeToken("dGVsZWdyYW06NzYxMzcyODE=", "hanstoken");
 
-    Credentials hans = userDataService.getCredentials("hans");
+    Credentials hans = userDataService.getCredentials("dGVsZWdyYW06NzYxMzcyODE=");
     assertThat(hans.getApiKey(), is("hanstoken"));
     assertThat(hans.getUserName(), is("hansuser"));
 

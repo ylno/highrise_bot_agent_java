@@ -46,27 +46,29 @@ public class HighriseHandler implements MessageHandler {
 
     if (message.equals("/help") || message.equals("/start")) {
       response.setMessage(
-          "Highrise bot: Find full documentation on https://highrisebot.com\n\n/highrise subdomain [value]\n/highrise apitoken [value]\n/highrise search [name]");
+          "I am HighriseBot.\n Learn more about me at https://highrisebot.com/documentation\n\nYou need a Highrise account to work with me. Go here to get one if you don’t have any: https://signup.37signals.com/highrise/free/signup/new\n\nPlease use the following commands to start your registration:\n\n/auth register [username]\n/highrise subdomain [value]\n/highrise apitoken [value]\n\nAfter that you’ll be ready to start searching your Highrise data:\n/highrise search [name]");
 
     } else if (message.startsWith("/highrise subdomain")) {
       String user = message.substring(new String("/highrise subdomain ").length());
 
       try {
         userDataService.storeUserName(request.getAuthToken(), user);
-        response.setMessage("ok, subdomain is " + user);
+        response.setMessage("Alright, Your Highrise Subdomain is now set to: " + user);
       } catch (JsonProcessingException e) {
         e.printStackTrace();
-        response.setMessage("sorry, storing subdomain failed " + user);
+        response.setMessage(
+            "Sorry, but the storing process of your subdomain failed, unfortunately. I am not smart enough to know why, yet. " + user);
       }
 
     } else if (message.startsWith("/highrise apitoken")) {
       String pass = message.substring(new String("/highrise apitoken ").length());
       try {
         userDataService.storeToken(request.getAuthToken(), pass);
-        response.setMessage("ok, apitoken is " + pass);
+        response.setMessage("Noted. Your API token for Highrise is now set to: " + pass);
       } catch (JsonProcessingException e) {
         e.printStackTrace();
-        response.setMessage("sorry, storing apitoken failed");
+        response.setMessage(
+            "Ouch! Something went terribly wrong. Storing of your API token failed. Unfortunately I have no glue, why this is.");
       }
 
     } else if (message.startsWith("/highrise search ")) {
