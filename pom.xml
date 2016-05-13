@@ -53,7 +53,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>de.benjaminborbe.bot.hello.Main</mainClass>
+							<mainClass>de.benjaminborbe.bot.highrise.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

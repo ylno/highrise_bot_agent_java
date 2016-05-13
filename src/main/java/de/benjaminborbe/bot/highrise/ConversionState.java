@@ -1,6 +1,4 @@
-package de.benjaminborbe.bot.hello;
-
-import de.benjaminborbe.bot.highrise.Credentials;
+package de.benjaminborbe.bot.highrise;
 
 public interface ConversionState {
 

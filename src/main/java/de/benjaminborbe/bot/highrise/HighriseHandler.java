@@ -1,4 +1,4 @@
-package de.benjaminborbe.bot.hello;
+package de.benjaminborbe.bot.highrise;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -15,24 +15,20 @@ import com.algaworks.highrisehq.bean.Person;
 import de.benjaminborbe.bot.agent.MessageHandler;
 import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.agent.Response;
-import de.benjaminborbe.bot.highrise.Credentials;
 
 public class HighriseHandler implements MessageHandler {
 
   private HashMap<String, ConversionState> userStates = new HashMap<>();
 
-  private String userUrl;
-
-  private String apiKey;
-
   private List<ConversionState> conversionStates = new LinkedList<>();
 
+  private UserDataService userDataService;
+
   @Inject
-  public HighriseHandler() {
+  public HighriseHandler(UserDataService userDataService) {
+    this.userDataService = userDataService;
     conversionStates.add(0, new ConversionStateSubdomain());
 
-    userUrl = "";
-    apiKey = "";
   }
 
   @Override
@@ -51,30 +47,15 @@ public class HighriseHandler implements MessageHandler {
     if (message.equals("/help")) {
       response.setMessage("Highrise bot:\n/highrise user [value]\n/highrise pass [value]\n/highrise search [name]");
     } else if (message.startsWith("/highrise user")) {
-      userUrl = message.substring(new String("/highrise user ").length());
-      response.setMessage("ok, user is " + userUrl);
+      String user = message.substring(new String("/highrise user ").length());
+      userDataService.storeUserName(user);
+      response.setMessage("ok, user is " + user);
     } else if (message.startsWith("/highrise pass")) {
-      apiKey = message.substring(new String("/highrise pass ").length());
-      response.setMessage("ok, pass is " + apiKey);
+      String pass = message.substring(new String("/highrise pass ").length());
+      userDataService.storeToken(pass);
+      response.setMessage("ok, pass is " + pass);
     } else if (message.startsWith("/highrise search ")) {
-      String searchString = message.substring(new String("/highrise search ").length());
-      Highrise highrise = new Highrise(userUrl, apiKey);
-      try {
-        List<Person> persons = highrise.getPeopleManager().searchByCustomField("term", searchString);
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("result: ");
-        for (Person person : persons) {
-          stringBuilder.append(person.getFirstName() + " " + person.getLastName());
-          if (person.getContactData().getEmailAddresses().size() > 0) {
-            stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
-          }
-          response.setMessage(stringBuilder.toString());
-        }
-      } catch (HighriseException e) {
-        response.setMessage("problems connecting with highrise " + e.toString());
-      } catch (Exception e) {
-        response.setMessage("problems connecting with highrise " + e.toString());
-      }
+      searchForPeople(request, response);
 
     }
 
@@ -85,6 +66,33 @@ public class HighriseHandler implements MessageHandler {
     }
 
     return Collections.singletonList(response);
+  }
+
+  private void searchForPeople(final Request request, final Response response) {
+    String searchString = request.getMessage().substring(new String("/highrise search ").length());
+    Credentials credentials = userDataService.getCredentials(request.getAuthToken());
+    Highrise highrise = new Highrise(credentials.getUserName(), credentials.getApiKey());
+    try {
+      List<Person> persons = highrise.getPeopleManager().searchByCustomField("term", searchString);
+      if (persons.size() == 0) {
+        response.setMessage("sorry, i found no results for " + searchString);
+      } else {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("result: ");
+        for (Person person : persons) {
+          stringBuilder.append(person.getFirstName() + " " + person.getLastName());
+          if (person.getContactData().getEmailAddresses().size() > 0) {
+            stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
+          }
+          response.setMessage(stringBuilder.toString());
+        }
+      }
+    } catch (HighriseException e) {
+      response.setMessage("problems connecting with highrise " + e.toString());
+    } catch (Exception e) {
+      response.setMessage("problems connecting with highrise " + e.toString());
+    }
   }
 
   public void registerHighriseUser(Credentials credentials) {

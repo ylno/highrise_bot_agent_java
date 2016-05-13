@@ -14,6 +14,7 @@ import com.algaworks.highrisehq.HighriseException;
 import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.agent.Response;
 import de.benjaminborbe.bot.highrise.Credentials;
+import de.benjaminborbe.bot.highrise.HighriseHandler;
 
 public class HighriseHandlerTest {
 
