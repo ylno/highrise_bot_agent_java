@@ -123,11 +123,7 @@ public class HighriseHandler implements MessageHandler {
             }
             stringBuilder.append("\n------------------------------\n");
           }
-          stringBuilder.append(person.getFirstName() + " " + person.getLastName());
-          if (person.getContactData().getEmailAddresses().size() > 0) {
-            stringBuilder.append("\n");
-            stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
-          }
+
           stringBuilder.append("\n");
           response.setMessage(stringBuilder.toString());
         }
