@@ -12,8 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import com.algaworks.highrisehq.Highrise;
 import com.algaworks.highrisehq.bean.Person;
-import com.algaworks.highrisehq.bean.SubjectData;
-import com.algaworks.highrisehq.bean.SubjectDatas;
 
 public class ApiTest {
 
@@ -42,8 +40,8 @@ public class ApiTest {
   @Test
   public void testAPISearch() throws Exception {
     Highrise highrise = getHighrise();
-    List<Person> people = highrise.getPeopleManager().searchByCustomField("term", "Ulf Werner");
-    people.size();
+    List<Person> people = highrise.getPeopleManager().searchByCustomField("term", "martin");
+    logger.debug("Size: " + people.size());
 
     for (Person person : people) {
       logger.debug("Lastname " + person.getLastName());
@@ -51,23 +49,5 @@ public class ApiTest {
     }
   }
 
-  @Test
-  public void testAPIx() throws Exception {
-    Highrise highrise = getHighrise();
 
-    List<Person> people = highrise.getPeopleManager().searchByCustomField("term", "Ulf Werner");
-    people.size();
-
-    for (Person person : people) {
-      logger.debug("Lastname " + person.getLastName());
-      logger.debug("id " + person.getId());
-      SubjectDatas subjectDatas = person.getSubjectDatas();
-      logger.debug("Subjekt {}", subjectDatas);
-      List<SubjectData> datas = subjectDatas.getDatas();
-      for (SubjectData data : datas) {
-        logger.debug("Data {}", data);
-      }
-
-    }
-  }
 }

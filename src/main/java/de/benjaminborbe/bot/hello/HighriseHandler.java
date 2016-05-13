@@ -49,7 +49,7 @@ public class HighriseHandler implements MessageHandler {
     String message = request.getMessage();
 
     if (message.equals("/help")) {
-      response.setMessage("Highrise bot:\n/highrise user value\nhighrise pass value");
+      response.setMessage("Highrise bot:\n/highrise user [value]\n/highrise pass [value]\n/highrise search [name]");
     } else if (message.startsWith("/highrise user")) {
       userUrl = message.substring(new String("/highrise user ").length());
       response.setMessage("ok, user is " + userUrl);
