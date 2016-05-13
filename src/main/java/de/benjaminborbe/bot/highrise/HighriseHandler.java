@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.algaworks.highrisehq.Highrise;
 import com.algaworks.highrisehq.HighriseException;
 import com.algaworks.highrisehq.bean.Person;
+import com.algaworks.highrisehq.bean.PhoneNumber;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import de.benjaminborbe.bot.agent.MessageHandler;
@@ -74,8 +75,7 @@ public class HighriseHandler implements MessageHandler {
     } else if (message.startsWith("/highrise search ")) {
       searchForPeople(request, response);
 
-    }
- else {
+    } else {
       return Collections.emptyList();
     }
 
@@ -93,8 +93,36 @@ public class HighriseHandler implements MessageHandler {
       } else {
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("I found this persons for you:");
+        stringBuilder.append("I found " + persons.size() + " contact(s) for you:");
+        boolean extended = persons.size() > 3 ? false : true;
         for (Person person : persons) {
+
+          if (extended) {
+            stringBuilder.append(person.getFirstName() + " " + person.getLastName());
+            if (person.getContactData().getEmailAddresses().size() > 0) {
+              stringBuilder.append("\nE-Mail:");
+              stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
+            }
+            if (person.getContactData().getPhoneNumbers().size() > 0) {
+              for (PhoneNumber phoneNumber : person.getContactData().getPhoneNumbers()) {
+                stringBuilder.append("\nPhone: " + phoneNumber.getNumber());
+              }
+
+            }
+            if (!person.getCompanyName().isEmpty()) {
+              stringBuilder.append("\nCompany: " + person.getCompanyName());
+            }
+
+            stringBuilder.append("\n------------------------------\n");
+          } else {
+
+            stringBuilder.append(person.getFirstName() + " " + person.getLastName());
+            if (person.getContactData().getEmailAddresses().size() > 0) {
+              stringBuilder.append("\n");
+              stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
+            }
+            stringBuilder.append("\n------------------------------\n");
+          }
           stringBuilder.append(person.getFirstName() + " " + person.getLastName());
           if (person.getContactData().getEmailAddresses().size() > 0) {
             stringBuilder.append("\n");

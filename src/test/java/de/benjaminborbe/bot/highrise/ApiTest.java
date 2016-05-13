@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.algaworks.highrisehq.Highrise;
 import com.algaworks.highrisehq.bean.Person;
+import com.algaworks.highrisehq.bean.PhoneNumber;
 
 public class ApiTest {
 
@@ -44,7 +45,15 @@ public class ApiTest {
     logger.debug("Size: " + people.size());
 
     for (Person person : people) {
+      logger.debug("Firstname " + person.getFirstName());
       logger.debug("Lastname " + person.getLastName());
+      logger.debug("Company " + person.getCompanyName());
+      List<PhoneNumber> phoneNumbers = person.getContactData().getPhoneNumbers();
+
+      for (PhoneNumber phoneNumber : phoneNumbers) {
+        logger.debug("Phone " + phoneNumber.getNumber());
+      }
+
       logger.debug("id " + person.getId());
     }
   }
