@@ -10,17 +10,20 @@ import java.util.Collection;
 import org.junit.Test;
 
 import com.algaworks.highrisehq.HighriseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.agent.Response;
+import de.benjaminborbe.bot.highrise.Config;
 import de.benjaminborbe.bot.highrise.Credentials;
 import de.benjaminborbe.bot.highrise.HighriseHandler;
+import de.benjaminborbe.bot.highrise.UserDataService;
 
 public class HighriseHandlerTest {
 
   @Test
   public void testHandleMessageReturnNotNullResult() throws Exception {
-    final HighriseHandler highriseHandler = new HighriseHandler();
+    final HighriseHandler highriseHandler = getHighriseHandler();
     final Request request = new Request();
     request.setBot("MyBot");
     request.setMessage("hello MyBot");
@@ -28,9 +31,13 @@ public class HighriseHandlerTest {
     assertThat(responses, is(notNullValue()));
   }
 
+  private HighriseHandler getHighriseHandler() {
+    return new HighriseHandler(new UserDataService(new Config(), new ObjectMapper()));
+  }
+
   @Test
   public void testHandleMessageUser() throws Exception {
-    final HighriseHandler highriseHandler = new HighriseHandler();
+    final HighriseHandler highriseHandler = getHighriseHandler();
     final Request request = new Request();
     request.setBot("MyBot");
     request.setMessage("/highrise user xyz");
@@ -42,7 +49,7 @@ public class HighriseHandlerTest {
 
   @Test
   public void testHandleMessagePass() throws Exception {
-    final HighriseHandler highriseHandler = new HighriseHandler();
+    final HighriseHandler highriseHandler = getHighriseHandler();
     final Request request = new Request();
     request.setBot("MyBot");
     request.setMessage("/highrise pass xyy");
@@ -54,7 +61,7 @@ public class HighriseHandlerTest {
 
   @Test
   public void testHandleMessageSearch() throws Exception {
-    final HighriseHandler highriseHandler = new HighriseHandler();
+    final HighriseHandler highriseHandler = getHighriseHandler();
     final Request request = new Request();
     request.setBot("MyBot");
     request.setMessage("/highrise search xyy");
@@ -66,7 +73,7 @@ public class HighriseHandlerTest {
 
   @Test
   public void testHandleMessageReturnNoMessageIfPatternNotMatches() throws Exception {
-    final HighriseHandler highriseHandler = new HighriseHandler();
+    final HighriseHandler highriseHandler = getHighriseHandler();
     final Request request = new Request();
     request.setBot("MyBot");
     request.setMessage("hello foo");
@@ -77,7 +84,7 @@ public class HighriseHandlerTest {
 
   @Test
   public void testHandleMessageReturnMessageSetPass() throws Exception {
-    final HighriseHandler highriseHandler = new HighriseHandler();
+    final HighriseHandler highriseHandler = getHighriseHandler();
     final Request request = new Request();
     request.setBot("MyBot");
     request.setMessage("/help");
@@ -92,7 +99,7 @@ public class HighriseHandlerTest {
 
   @Test
   public void testRegisterHighriseFail() throws Exception {
-    final HighriseHandler highriseHandler = new HighriseHandler();
+    final HighriseHandler highriseHandler = getHighriseHandler();
 
     try {
       Credentials credentials = new Credentials();

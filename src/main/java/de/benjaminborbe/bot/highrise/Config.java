@@ -5,6 +5,8 @@ public class Config {
   private String authUser;
   private String authPassword;
 
+  private String authAdress;
+
   public void setAuthPassword(final String authPassword) {
     this.authPassword = authPassword;
   }
@@ -21,4 +23,11 @@ public class Config {
     return authPassword;
   }
 
+  public void setAuthAdress(final String authAdress) {
+    this.authAdress = authAdress;
+  }
+
+  public String getAuthAdress() {
+    return authAdress;
+  }
 }
