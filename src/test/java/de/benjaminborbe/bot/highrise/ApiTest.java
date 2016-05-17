@@ -6,6 +6,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ public class ApiTest {
 
   private static final Logger logger = LoggerFactory.getLogger(ApiTest.class);
 
+  @Ignore
   @Test
   public void testAPI() throws Exception {
 
@@ -38,6 +40,7 @@ public class ApiTest {
     return new Highrise(user, password);
   }
 
+  @Ignore
   @Test
   public void testAPISearch() throws Exception {
     Highrise highrise = getHighrise();

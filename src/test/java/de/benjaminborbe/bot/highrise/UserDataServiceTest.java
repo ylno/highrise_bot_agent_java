@@ -3,12 +3,14 @@ package de.benjaminborbe.bot.highrise;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UserDataServiceTest {
 
+  @Ignore
   @Test
   public void testStoreUserName() throws Exception {
 
