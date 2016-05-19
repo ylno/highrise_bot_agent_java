@@ -1,9 +1,5 @@
 package de.benjaminborbe.bot.highrise;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNull.notNullValue;
-
 import java.util.List;
 
 import org.junit.Test;
@@ -14,6 +10,8 @@ import com.algaworks.highrisehq.Highrise;
 import com.algaworks.highrisehq.bean.Person;
 import com.algaworks.highrisehq.bean.PhoneNumber;
 
+/* This test needs to be env-Vars highrise_user and highrise_pass set. If it does not find them it does nothing */
+
 public class ApiTest {
 
   private static final Logger logger = LoggerFactory.getLogger(ApiTest.class);
@@ -22,6 +20,9 @@ public class ApiTest {
   public void testAPI() throws Exception {
 
     Highrise highrise = getHighrise();
+    if (highrise == null) {
+      return;
+    }
     List<Person> people = highrise.getPeopleManager().getAll(new Long(0));
     people.size();
 
@@ -30,17 +31,12 @@ public class ApiTest {
     }
   }
 
-  private Highrise getHighrise() {
-    String user = System.getenv("highrise_user");
-    String password = System.getenv("highrise_pass");
-    assertThat(password, is(notNullValue()));
-
-    return new Highrise(user, password);
-  }
-
   @Test
   public void testAPISearch() throws Exception {
     Highrise highrise = getHighrise();
+    if (highrise == null) {
+      return;
+    }
     List<Person> people = highrise.getPeopleManager().searchByCustomField("term", "martin");
     logger.debug("Size: " + people.size());
 
@@ -56,6 +52,17 @@ public class ApiTest {
 
       logger.debug("id " + person.getId());
     }
+  }
+
+  private Highrise getHighrise() {
+    String user = System.getenv("highrise_user");
+    String password = System.getenv("highrise_pass");
+
+    if (user == null || user.isEmpty() || password == null || password.isEmpty()) {
+      return null;
+    }
+
+    return new Highrise(user, password);
   }
 
 

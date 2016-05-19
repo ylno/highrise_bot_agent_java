@@ -3,6 +3,7 @@ package de.benjaminborbe.bot.highrise;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class UserDataServiceTest {
 
   @Test
+  @Ignore
   public void testStoreUserName() throws Exception {
 
     Config config = new Config();
