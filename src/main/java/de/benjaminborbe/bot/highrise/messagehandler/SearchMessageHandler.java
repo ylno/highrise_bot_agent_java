@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.algaworks.highrisehq.Highrise;
+import com.algaworks.highrisehq.bean.EmailAddress;
 import com.algaworks.highrisehq.bean.Person;
 import com.algaworks.highrisehq.bean.PhoneNumber;
 import com.algaworks.highrisehq.managers.PeopleManager;
@@ -61,7 +62,7 @@ public class SearchMessageHandler extends MessageHandler {
       final PeopleManager peopleManager = highrise.getPeopleManager();
       final List<Person> persons = peopleManager.searchByCustomField("term", searchString);
       if (persons == null || persons.size() == 0) {
-        return "sorry, i found no results for " + searchString;
+        return "sorry, I found no results for " + searchString;
       } else {
 
         final StringBuilder stringBuilder = new StringBuilder();
@@ -70,25 +71,25 @@ public class SearchMessageHandler extends MessageHandler {
         for (final Person person : persons) {
 
           if (extended) {
-            createLongPersonResult(request, stringBuilder, person);
+            stringBuilder.append(createLongPersonResult(request, person));
           } else {
 
-            createShortPersonResult(stringBuilder, person);
+            stringBuilder.append(createShortPersonResult(person));
           }
 
           stringBuilder.append("\n");
-          return stringBuilder.toString();
         }
+        return stringBuilder.toString();
       }
     } catch (final Exception e) {
       logger.debug("Exception {}", e);
       return "problems connecting with highrise " + e.toString();
     }
 
-    return "sorry, i found no results for " + searchString;
   }
 
-  public void createShortPersonResult(final StringBuilder stringBuilder, final Person person) {
+  public String createShortPersonResult(final Person person) {
+    StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("\n" + person.getFirstName() + " " + person.getLastName());
     if (person.getContactData() != null && person.getContactData().getEmailAddresses() != null
         && person.getContactData().getEmailAddresses().size() > 0) {
@@ -96,18 +97,27 @@ public class SearchMessageHandler extends MessageHandler {
       stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
       stringBuilder.append("\n");
     }
+    return stringBuilder.toString();
   }
 
-  public void createLongPersonResult(final Request request, final StringBuilder stringBuilder, final Person person) throws IOException {
+  public String createLongPersonResult(final Request request, final Person person) throws IOException {
+
+    StringBuilder stringBuilder = new StringBuilder();
+
     stringBuilder.append("\n" + person.getFirstName() + " " + person.getLastName());
     if (person.getContactData() != null && person.getContactData().getEmailAddresses() != null
         && person.getContactData().getEmailAddresses().size() > 0) {
       stringBuilder.append("\nE-Mail: ");
+      for (EmailAddress emailAddress : person.getContactData().getEmailAddresses()) {
+        stringBuilder.append("\n  " + emailAddress.getAddress());
+      }
+
       stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
     }
     if (person.getContactData().getPhoneNumbers().size() > 0) {
+      stringBuilder.append("\nPhone: ");
       for (final PhoneNumber phoneNumber : person.getContactData().getPhoneNumbers()) {
-        stringBuilder.append("\nPhone: " + phoneNumber.getNumber());
+        stringBuilder.append("\n  " + phoneNumber.getNumber());
       }
 
     }
@@ -120,6 +130,7 @@ public class SearchMessageHandler extends MessageHandler {
     stringBuilder.append(createDeepLink(person, credentials));
 
     stringBuilder.append("\n------------------------------\n");
+    return stringBuilder.toString();
   }
 
   public String createDeepLink(final Person person, final Credentials credentials) {

@@ -42,7 +42,7 @@ public class SearchMessageHandlerTest {
     request.setMessage("/highrise search Uwe");
     final String ret = searchMessageHandler.handleMessage(request);
 
-    assertThat(ret, is("sorry, i found no results for Uwe"));
+    assertThat(ret, is("sorry, I found no results for Uwe"));
 
   }
 
@@ -122,11 +122,10 @@ public class SearchMessageHandlerTest {
     final Request request = new Request();
     final Credentials credentials = mock(Credentials.class);
     when(credentials.getUserName()).thenReturn("subdomainx");
-    StringBuilder stringBuilder = new StringBuilder();
 
-    searchMessageHandler.createShortPersonResult(stringBuilder, person);
+    String shortPersonResult = searchMessageHandler.createShortPersonResult(person);
 
-    assertThat(stringBuilder.toString(), is("\nFirst Last\n  email@test.de\n"));
+    assertThat(shortPersonResult, is("\nFirst Last\n  email@test.de\n"));
 
   }
 
@@ -147,11 +146,10 @@ public class SearchMessageHandlerTest {
     final Request request = new Request();
     final Credentials credentials = mock(Credentials.class);
     when(credentials.getUserName()).thenReturn("subdomainx");
-    StringBuilder stringBuilder = new StringBuilder();
 
-    searchMessageHandler.createShortPersonResult(stringBuilder, person);
+    String shortPersonResult = searchMessageHandler.createShortPersonResult(person);
 
-    assertThat(stringBuilder.toString(), is("\nFirst Last"));
+    assertThat(shortPersonResult, is("\nFirst Last"));
 
   }
 }
