@@ -32,10 +32,10 @@ public class SearchMessageHandlerTest {
     final HighriseFactory highriseFactory = mock(HighriseFactory.class);
     when(highriseFactory.get(token)).thenReturn(highrise);
 
-    UserDataService userDataService = mock(UserDataService.class);
+    final UserDataService userDataService = mock(UserDataService.class);
 
-    SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
-    Request request = new Request();
+    final SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
+    final Request request = new Request();
     request.setAuthToken(token);
     request.setMessage("/highrise search Uwe");
     final String ret = searchMessageHandler.handleMessage(request);
@@ -47,8 +47,8 @@ public class SearchMessageHandlerTest {
   @Test
   public void testHandleLongList() throws Exception {
 
-    List<Person> searchResult = new ArrayList<>();
-    Person firstPerson = mock(Person.class);
+    final List<Person> searchResult = new ArrayList<>();
+    final Person firstPerson = mock(Person.class);
     when(firstPerson.getId()).thenReturn(new Long(123));
     searchResult.add(firstPerson);
     searchResult.add(new Person());
@@ -57,21 +57,21 @@ public class SearchMessageHandlerTest {
     searchResult.add(new Person());
 
     final Highrise highrise = mock(Highrise.class);
-    PeopleManager peopleManager = mock(PeopleManager.class);
+    final PeopleManager peopleManager = mock(PeopleManager.class);
     when(highrise.getPeopleManager()).thenReturn(peopleManager);
     when(peopleManager.searchByCustomField("term", "Uwe")).thenReturn(searchResult);
 
-    String token = "secret";
+    final String token = "secret";
     final HighriseFactory highriseFactory = mock(HighriseFactory.class);
     when(highriseFactory.get(token)).thenReturn(highrise);
 
-    UserDataService userDataService = mock(UserDataService.class);
+    final UserDataService userDataService = mock(UserDataService.class);
 
-    SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
-    Request request = new Request();
+    final SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
+    final Request request = new Request();
     request.setAuthToken(token);
     request.setMessage("/highrise search Uwe");
-    String ret = searchMessageHandler.handleMessage(request);
+    final String ret = searchMessageHandler.handleMessage(request);
 
     assertThat(ret.startsWith("I found 5 contact"), is(true));
 
@@ -80,19 +80,19 @@ public class SearchMessageHandlerTest {
   @Test
   public void testCreateDeepLink() throws Exception {
 
-    List<Person> searchResult = new ArrayList<>();
-    Person firstPerson = mock(Person.class);
+    final List<Person> searchResult = new ArrayList<>();
+    final Person firstPerson = mock(Person.class);
     when(firstPerson.getId()).thenReturn(new Long(123));
 
     final HighriseFactory highriseFactory = mock(HighriseFactory.class);
 
-    UserDataService userDataService = mock(UserDataService.class);
+    final UserDataService userDataService = mock(UserDataService.class);
 
-    SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
-    Request request = new Request();
+    final SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
+    final Request request = new Request();
     final Credentials credentials = mock(Credentials.class);
     when(credentials.getUserName()).thenReturn("subdomainx");
-    String ret = searchMessageHandler.createDeepLink(firstPerson, credentials);
+    final String ret = searchMessageHandler.createDeepLink(firstPerson, credentials);
 
     assertThat(ret, is("https://subdomainx.highrisehq.com/people/123"));
 

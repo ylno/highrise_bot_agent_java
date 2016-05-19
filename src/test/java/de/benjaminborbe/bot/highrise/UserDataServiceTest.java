@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class UserDataServiceTest {
 
   @Test
+  @Ignore
   public void testStoreUserName() throws Exception {
 
     final Config config = new Config();

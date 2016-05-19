@@ -30,12 +30,12 @@ public class SearchMessageHandler extends MessageHandler {
 
   public static final String PEOPLE_PATH = "/people/";
 
-  private HighriseFactory highriseFactory;
+  private final HighriseFactory highriseFactory;
 
-  private UserDataService userDataService;
+  private final UserDataService userDataService;
 
   @Inject
-  public SearchMessageHandler(HighriseFactory highriseFactory, UserDataService userDataService) {
+  public SearchMessageHandler(final HighriseFactory highriseFactory, final UserDataService userDataService) {
     this.highriseFactory = highriseFactory;
     this.userDataService = userDataService;
   }
@@ -66,8 +66,8 @@ public class SearchMessageHandler extends MessageHandler {
 
         final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("I found " + persons.size() + " contact(s) for you:");
-        boolean extended = persons.size() > LIMIT_FOR_EXTENDED_OUTPUT ? false : true;
-        for (Person person : persons) {
+        final boolean extended = persons.size() > LIMIT_FOR_EXTENDED_OUTPUT ? false : true;
+        for (final Person person : persons) {
 
           if (extended) {
             createLongPersonResult(request, stringBuilder, person);
@@ -80,7 +80,7 @@ public class SearchMessageHandler extends MessageHandler {
           return stringBuilder.toString();
         }
       }
-    } catch (Exception e) {
+    } catch (final Exception e) {
       logger.debug("Exception {}", e);
       return "problems connecting with highrise " + e.toString();
     }
@@ -106,7 +106,7 @@ public class SearchMessageHandler extends MessageHandler {
       stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
     }
     if (person.getContactData().getPhoneNumbers().size() > 0) {
-      for (PhoneNumber phoneNumber : person.getContactData().getPhoneNumbers()) {
+      for (final PhoneNumber phoneNumber : person.getContactData().getPhoneNumbers()) {
         stringBuilder.append("\nPhone: " + phoneNumber.getNumber());
       }
 
@@ -115,7 +115,7 @@ public class SearchMessageHandler extends MessageHandler {
       stringBuilder.append("\nCompany: " + person.getCompanyName());
     }
 
-    Credentials credentials = userDataService.getCredentials(request.getAuthToken());
+    final Credentials credentials = userDataService.getCredentials(request.getAuthToken());
     stringBuilder.append(createDeepLink(person, credentials));
 
     stringBuilder.append("\n------------------------------\n");

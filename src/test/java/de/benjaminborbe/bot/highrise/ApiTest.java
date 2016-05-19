@@ -23,7 +23,7 @@ public class ApiTest {
     if (highrise == null) {
       return;
     }
-    final List<Person> people = highrise.getPeopleManager().getAll(new Long(0));
+    final List<Person> people = highrise.getPeopleManager().getAll(0L);
     people.size();
 
     for (final Person person : people) {
