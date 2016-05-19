@@ -2,6 +2,7 @@ package de.benjaminborbe.bot.highrise.messagehandler;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -125,7 +126,7 @@ public class SearchMessageHandlerTest {
 
     String shortPersonResult = searchMessageHandler.createShortPersonResult(person);
 
-    assertThat(shortPersonResult, is("\nFirst Last\n  email@test.de\n"));
+    assertThat(shortPersonResult, is("First Last\n  email@test.de\n"));
 
   }
 
@@ -149,7 +150,39 @@ public class SearchMessageHandlerTest {
 
     String shortPersonResult = searchMessageHandler.createShortPersonResult(person);
 
-    assertThat(shortPersonResult, is("\nFirst Last"));
+    assertThat(shortPersonResult, is("First Last\n"));
 
   }
+
+  @Test
+  public void testCreateLongPersonResult() throws Exception {
+
+    Person person = new Person();
+    person.setId(123L);
+    person.setFirstName("First");
+    person.setLastName("Last");
+    ContactData contactData = new ContactData();
+    person.setContactData(contactData);
+    ArrayList<EmailAddress> emailAddresses = new ArrayList<>();
+    EmailAddress e = new EmailAddress();
+    e.setAddress("email@test.de");
+    emailAddresses.add(e);
+    contactData.setEmailAddresses(emailAddresses);
+
+    final HighriseFactory highriseFactory = mock(HighriseFactory.class);
+    final UserDataService userDataService = mock(UserDataService.class);
+    final Credentials credentials = mock(Credentials.class);
+    when(userDataService.getCredentials(anyString())).thenReturn(credentials);
+
+    final SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
+    when(credentials.getUserName()).thenReturn("subdomainx");
+
+    final Request request = new Request();
+    String shortPersonResult = searchMessageHandler.createLongPersonResult(request, person);
+
+    assertThat(shortPersonResult,
+        is("First Last\nE-Mail: \n  email@test.de\nhttps://subdomainx.highrisehq.com/people/123\n------------------------------\n"));
+
+  }
+
 }

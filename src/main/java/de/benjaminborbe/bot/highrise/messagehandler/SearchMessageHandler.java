@@ -66,14 +66,13 @@ public class SearchMessageHandler extends MessageHandler {
       } else {
 
         final StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("I found " + persons.size() + " contact(s) for you:");
+        stringBuilder.append("I found " + persons.size() + " contact(s) for you:").append("\n");
         final boolean extended = persons.size() > LIMIT_FOR_EXTENDED_OUTPUT ? false : true;
         for (final Person person : persons) {
 
           if (extended) {
             stringBuilder.append(createLongPersonResult(request, person));
           } else {
-
             stringBuilder.append(createShortPersonResult(person));
           }
 
@@ -90,12 +89,15 @@ public class SearchMessageHandler extends MessageHandler {
 
   public String createShortPersonResult(final Person person) {
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("\n" + person.getFirstName() + " " + person.getLastName());
+    stringBuilder.append(person.getFirstName())
+        .append(" ")
+        .append(person.getLastName())
+        .append("\n");
     if (person.getContactData() != null && person.getContactData().getEmailAddresses() != null
         && person.getContactData().getEmailAddresses().size() > 0) {
-      stringBuilder.append("\n  ");
-      stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
-      stringBuilder.append("\n");
+      stringBuilder.append("  ")
+          .append(person.getContactData().getEmailAddresses().get(0).getAddress())
+          .append("\n");
     }
     return stringBuilder.toString();
   }
@@ -104,36 +106,39 @@ public class SearchMessageHandler extends MessageHandler {
 
     StringBuilder stringBuilder = new StringBuilder();
 
-    stringBuilder.append("\n" + person.getFirstName() + " " + person.getLastName());
+    stringBuilder.append(person.getFirstName())
+        .append(" ")
+        .append(person.getLastName())
+        .append("\n");
+
     if (person.getContactData() != null && person.getContactData().getEmailAddresses() != null
         && person.getContactData().getEmailAddresses().size() > 0) {
-      stringBuilder.append("\nE-Mail: ");
+      stringBuilder.append("E-Mail: \n");
       for (EmailAddress emailAddress : person.getContactData().getEmailAddresses()) {
-        stringBuilder.append("\n  " + emailAddress.getAddress());
+        stringBuilder.append("  ").append(emailAddress.getAddress()).append("\n");
       }
-
-      stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
     }
     if (person.getContactData().getPhoneNumbers().size() > 0) {
-      stringBuilder.append("\nPhone: ");
+      stringBuilder.append("Phone: \n");
       for (final PhoneNumber phoneNumber : person.getContactData().getPhoneNumbers()) {
-        stringBuilder.append("\n  " + phoneNumber.getNumber());
+        stringBuilder.append("  ").append(phoneNumber.getNumber()).append("\n");
       }
 
     }
-    if (!person.getCompanyName().isEmpty()) {
-      stringBuilder.append("\nCompany: " + person.getCompanyName());
+    if (person.getCompanyName() != null && !person.getCompanyName().isEmpty()) {
+      stringBuilder.append("Company: ").append(person.getCompanyName()).append("\n");
     }
 
     final Credentials credentials = userDataService.getCredentials(request.getAuthToken());
-    stringBuilder.append("\n");
-    stringBuilder.append(createDeepLink(person, credentials));
+    stringBuilder.append(createDeepLink(person, credentials)).append("\n");
 
-    stringBuilder.append("\n------------------------------\n");
+    stringBuilder.append("------------------------------\n");
     return stringBuilder.toString();
   }
 
   public String createDeepLink(final Person person, final Credentials credentials) {
-    return SCHEME + "://" + credentials.getUserName() + "." + HIGHRISEHQDOMAIN + PEOPLE_PATH + person.getId();
+    String userName = credentials.getUserName();
+    Long id = person.getId();
+    return SCHEME + "://" + userName + "." + HIGHRISEHQDOMAIN + PEOPLE_PATH + id;
   }
 }
