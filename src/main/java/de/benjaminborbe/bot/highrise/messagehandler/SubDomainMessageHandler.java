@@ -2,12 +2,15 @@ package de.benjaminborbe.bot.highrise.messagehandler;
 
 import javax.inject.Inject;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.highrise.UserDataService;
 
 public class SubDomainMessageHandler extends MessageHandler {
+
+  private static final Logger logger = LoggerFactory.getLogger(SubDomainMessageHandler.class);
 
   private final UserDataService userDataService;
 
@@ -32,8 +35,8 @@ public class SubDomainMessageHandler extends MessageHandler {
     try {
       userDataService.storeUserName(request.getAuthToken(), user);
       return "Alright, Your Highrise Subdomain is now set to: " + user;
-    } catch (final JsonProcessingException e) {
-      e.printStackTrace();
+    } catch (final java.io.IOException e) {
+      logger.debug("storeUserName failed", e);
       return "Sorry, but the storing process of your subdomain failed, unfortunately. I am not smart enough to know why, yet. " + user;
     }
   }

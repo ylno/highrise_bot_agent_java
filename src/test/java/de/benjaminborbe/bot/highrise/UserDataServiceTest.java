@@ -15,15 +15,16 @@ public class UserDataServiceTest {
   public void testStoreUserName() throws Exception {
 
     final Config config = new Config();
-    config.setAuthAdress("localhost:8080");
+    config.setAuthAdress("localhost:6666");
     config.setAuthUser("auth");
     config.setAuthPassword("test123");
 
     final UserDataService userDataService = new UserDataService(config, new ObjectMapper());
-    userDataService.storeUserName("dGVsZWdyYW06NzYxMzcyODE=", "hansuser");
-    userDataService.storeToken("dGVsZWdyYW06NzYxMzcyODE=", "hanstoken");
+    String authToken = "dGVzdGVyOnNlY3JldA==";
+    userDataService.storeUserName(authToken, "hansuser");
+    userDataService.storeToken(authToken, "hanstoken");
 
-    final Credentials hans = userDataService.getCredentials("dGVsZWdyYW06NzYxMzcyODE=");
+    final Credentials hans = userDataService.getCredentials(authToken);
     assertThat(hans.getApiKey(), is("hanstoken"));
     assertThat(hans.getUserName(), is("hansuser"));
 

@@ -144,7 +144,6 @@ public class SearchMessageHandlerTest {
     final UserDataService userDataService = mock(UserDataService.class);
 
     final SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
-    final Request request = new Request();
     final Credentials credentials = mock(Credentials.class);
     when(credentials.getUserName()).thenReturn("subdomainx");
 

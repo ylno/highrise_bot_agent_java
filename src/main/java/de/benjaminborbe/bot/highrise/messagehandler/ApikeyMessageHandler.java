@@ -2,12 +2,15 @@ package de.benjaminborbe.bot.highrise.messagehandler;
 
 import javax.inject.Inject;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.highrise.UserDataService;
 
 public class ApikeyMessageHandler extends MessageHandler {
+
+  private static final Logger logger = LoggerFactory.getLogger(ApikeyMessageHandler.class);
 
   private final UserDataService userDataService;
 
@@ -31,8 +34,8 @@ public class ApikeyMessageHandler extends MessageHandler {
     try {
       userDataService.storeToken(request.getAuthToken(), pass);
       return "Noted. Your API token for Highrise is now set to: " + pass;
-    } catch (final JsonProcessingException e) {
-      e.printStackTrace();
+    } catch (final java.io.IOException e) {
+      logger.debug("storeToken failed", e);
       return "Ouch! Something went terribly wrong. Storing of your API token failed. Unfortunately I have no glue, why this is.";
     }
   }
