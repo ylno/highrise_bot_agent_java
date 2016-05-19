@@ -1,5 +1,6 @@
 package de.benjaminborbe.bot.highrise;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import de.benjaminborbe.bot.agent.MessageHandler;
 import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.agent.Response;
+import de.benjaminborbe.bot.highrise.messagehandler.HelpMessage;
 
 public class HighriseHandler implements MessageHandler {
 
@@ -29,12 +31,16 @@ public class HighriseHandler implements MessageHandler {
 
   private List<ConversionState> conversionStates = new LinkedList<>();
 
+  private List<HelpMessage> messageHandlers = new ArrayList<>();
+
   private UserDataService userDataService;
 
   @Inject
   public HighriseHandler(UserDataService userDataService) {
     this.userDataService = userDataService;
     conversionStates.add(0, new ConversionStateSubdomain());
+
+    messageHandlers.add(new HelpMessage());
 
   }
 
@@ -45,11 +51,14 @@ public class HighriseHandler implements MessageHandler {
 
     String message = request.getMessage();
 
-    if (message.equals("/help") || message.equals("/start")) {
-      response.setMessage(
-          "I am HighriseBot.\n Learn more about me at https://highrisebot.com/documentation\n\nYou need a Highrise account to work with me. Go here to get one if you don’t have any: https://signup.37signals.com/highrise/free/signup/new\n\nPlease use the following commands to start your registration:\n\n/auth register [username]\n/highrise subdomain [value]\n/highrise apitoken [value]\n\nAfter that you’ll be ready to start searching your Highrise data:\n/highrise search [name]");
+    for (HelpMessage messageHandler : messageHandlers) {
+      if (messageHandler.matches(message)) {
+        response.setMessage(messageHandler.handleMessage(message));
+        return Collections.singletonList(response);
+      }
+    }
 
-    } else if (message.startsWith("/highrise subdomain")) {
+    if (message.startsWith("/highrise subdomain")) {
       String user = message.substring(new String("/highrise subdomain ").length());
 
       try {
