@@ -41,7 +41,7 @@ public class HighriseHandler implements MessageHandler {
     messageHandlers.add(new HelpMessageHandler());
     messageHandlers.add(new SubDomainMessageHandler(userDataService));
     messageHandlers.add(new ApikeyMessageHandler(userDataService));
-    messageHandlers.add(new SearchMessageHandler(highriseFactory));
+    messageHandlers.add(new SearchMessageHandler(highriseFactory, userDataService));
     messageHandlers.add(new HelpMessageHandler());
     messageHandlers.add(new WrongMessageHandler());
 

@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UserDataServiceTest {
 
-  @Ignore
   @Test
   public void testStoreUserName() throws Exception {
 
