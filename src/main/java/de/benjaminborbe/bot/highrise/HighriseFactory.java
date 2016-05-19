@@ -15,7 +15,7 @@ public class HighriseFactory {
     this.userDataService = userDataService;
   }
 
-  public Highrise get(final String authToken) throws IOException {
+  public Highrise get(final String authToken) throws IOException, UserNotFoundException {
     final Credentials credentials = userDataService.getCredentials(authToken);
     final Highrise highrise = new Highrise(credentials.getUserName(), credentials.getApiKey());
     return highrise;

@@ -30,4 +30,19 @@ public class UserDataServiceTest {
 
   }
 
+  @Test(expected = UserNotFoundException.class)
+  @Ignore
+  public void testUserNotFoundExceptionWhenUserNotRegistered() throws Exception {
+
+    final Config config = new Config();
+    config.setAuthAdress("localhost:6666");
+    config.setAuthUser("auth");
+    config.setAuthPassword("test123");
+
+    final UserDataService userDataService = new UserDataService(config, new ObjectMapper());
+    String authToken = "notexistingAuthToken";
+    userDataService.storeUserName(authToken, "hansuser");
+
+  }
+
 }

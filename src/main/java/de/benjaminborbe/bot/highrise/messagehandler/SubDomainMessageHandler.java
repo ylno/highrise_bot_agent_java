@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.highrise.UserDataService;
+import de.benjaminborbe.bot.highrise.UserNotFoundException;
 
 public class SubDomainMessageHandler extends MessageHandler {
 
@@ -38,6 +39,8 @@ public class SubDomainMessageHandler extends MessageHandler {
     } catch (final java.io.IOException e) {
       logger.debug("storeUserName failed", e);
       return "Sorry, but the storing process of your subdomain failed, unfortunately. I am not smart enough to know why, yet. " + user;
+    } catch (UserNotFoundException e) {
+      return "Your account is not registered please set a username first using /auth register [username]";
     }
   }
 }

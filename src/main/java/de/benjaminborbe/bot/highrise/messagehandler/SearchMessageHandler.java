@@ -18,6 +18,7 @@ import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.highrise.Credentials;
 import de.benjaminborbe.bot.highrise.HighriseFactory;
 import de.benjaminborbe.bot.highrise.UserDataService;
+import de.benjaminborbe.bot.highrise.UserNotFoundException;
 
 public class SearchMessageHandler extends MessageHandler {
 
@@ -102,7 +103,7 @@ public class SearchMessageHandler extends MessageHandler {
     return stringBuilder.toString();
   }
 
-  public String createLongPersonResult(final Request request, final Person person) throws IOException {
+  public String createLongPersonResult(final Request request, final Person person) throws IOException, UserNotFoundException {
 
     StringBuilder stringBuilder = new StringBuilder();
 

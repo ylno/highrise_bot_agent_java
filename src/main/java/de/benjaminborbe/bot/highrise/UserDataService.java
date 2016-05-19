@@ -37,7 +37,7 @@ public class UserDataService {
     this.objectMapper = objectMapper;
   }
 
-  public Credentials getCredentials(final String authToken) throws IOException {
+  public Credentials getCredentials(final String authToken) throws IOException, UserNotFoundException {
 
     String internalUser = tokenToUsername(authToken);
 
@@ -72,7 +72,7 @@ public class UserDataService {
     return value;
   }
 
-  public void storeUserName(final String authToken, final String highriseSubDomain) throws IOException {
+  public void storeUserName(final String authToken, final String highriseSubDomain) throws IOException, UserNotFoundException {
     final String keyToSet = HIGHRISE_SUBDOMAIN;
 
     String internalUser = tokenToUsername(authToken);
@@ -80,19 +80,15 @@ public class UserDataService {
     storeValue(internalUser, keyToSet, highriseSubDomain);
   }
 
-  public void storeToken(final String authToken, final String apiKey) throws IOException {
+  public void storeToken(final String authToken, final String apiKey) throws IOException, UserNotFoundException {
 
     String internalUser = tokenToUsername(authToken);
     storeValue(internalUser, HIGHRISE_APIKEY, apiKey);
   }
 
-  private String tokenToUsername(final String authToken) throws IOException {
+  private String tokenToUsername(final String authToken) throws IOException, UserNotFoundException {
     final String authPassword = config.getAuthPassword();
     final String authUser = config.getAuthUser();
-
-    /*
-     * ype LoginRequest struct { AuthToken AuthToken json:"authToken" RequiredGroups []GroupName json:"groups" }
-     */
 
     final String apiToken = new String(Base64.getEncoder().encode(new String(authUser + ":" + authPassword).getBytes()));
 
@@ -106,10 +102,16 @@ public class UserDataService {
     String s = "{\"authToken\": \"" + authToken + "\"}";
     final byte[] json = s.getBytes("UTF-8");
 
-    final String response = webResource.header("Authorization", "Bearer " + apiToken).type(MediaType.APPLICATION_FORM_URLENCODED)
-        .post(String.class, json);
+    final ClientResponse response = webResource.header("Authorization", "Bearer " + apiToken).type(MediaType.APPLICATION_FORM_URLENCODED)
+        .post(ClientResponse.class, json);
 
-    final UserData userData = objectMapper.readValue(response, UserData.class);
+    if (response.getStatus() == 404) {
+      throw new UserNotFoundException();
+    }
+
+    String output = response.getEntity(String.class);
+
+    final UserData userData = objectMapper.readValue(output, UserData.class);
 
     logger.debug("storage respone tokenToUsername: {}", userData.getUser());
 
@@ -136,6 +138,7 @@ public class UserDataService {
 
     final ClientResponse response = webResource.header("Authorization", "Bearer " + apiToken).type(MediaType.APPLICATION_FORM_URLENCODED)
         .post(ClientResponse.class, json);
+
 
     logger.debug("storage respone: {}", response);
 

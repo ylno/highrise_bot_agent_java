@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.highrise.UserDataService;
+import de.benjaminborbe.bot.highrise.UserNotFoundException;
 
 public class ApikeyMessageHandler extends MessageHandler {
 
@@ -37,6 +38,8 @@ public class ApikeyMessageHandler extends MessageHandler {
     } catch (final java.io.IOException e) {
       logger.debug("storeToken failed", e);
       return "Ouch! Something went terribly wrong. Storing of your API token failed. Unfortunately I have no glue, why this is.";
+    } catch (UserNotFoundException e) {
+      return "Your account is not registered please set a username first using /auth register [username]";
     }
   }
 }
