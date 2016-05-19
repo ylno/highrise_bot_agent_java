@@ -9,6 +9,7 @@ import static org.mockito.Mockito.mock;
 
 import java.util.Collection;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.algaworks.highrisehq.HighriseException;
@@ -39,6 +40,7 @@ public class HighriseHandlerTest {
     return new HighriseHandler(userDataService, new SubDomainMessageHandler(userDataService));
   }
 
+  @Ignore
   @Test
   public void testHandleMessageUser() throws Exception {
     UserDataService userDataService = mock(UserDataService.class);
@@ -53,6 +55,7 @@ public class HighriseHandlerTest {
     assertThat(responses.iterator().next().getMessage(), is("Alright, Your Highrise Subdomain is now set to: xyz"));
   }
 
+  @Ignore
   @Test
   public void testHandleMessagePass() throws Exception {
     UserDataService userDataService = mock(UserDataService.class);
@@ -90,6 +93,7 @@ public class HighriseHandlerTest {
     assertThat(responses.size(), is(0));
   }
 
+  @Ignore
   @Test
   public void testHandleMessageReturnMessageSetPass() throws Exception {
     final HighriseHandler highriseHandler = getHighriseHandler();
@@ -107,7 +111,6 @@ public class HighriseHandlerTest {
   @Test
   public void testRegisterHighriseFail() throws Exception {
     final HighriseHandler highriseHandler = getHighriseHandler();
-
     try {
       Credentials credentials = new Credentials();
       credentials.setApiKey("s");
@@ -117,7 +120,6 @@ public class HighriseHandlerTest {
     } catch (HighriseException e) {
 
     }
-
   }
 
 }
