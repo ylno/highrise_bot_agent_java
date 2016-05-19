@@ -4,26 +4,24 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 import java.util.Collection;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.algaworks.highrisehq.HighriseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.agent.Response;
 import de.benjaminborbe.bot.highrise.Config;
-import de.benjaminborbe.bot.highrise.Credentials;
+import de.benjaminborbe.bot.highrise.HighriseFactory;
 import de.benjaminborbe.bot.highrise.HighriseHandler;
 import de.benjaminborbe.bot.highrise.UserDataService;
-import de.benjaminborbe.bot.highrise.messagehandler.SubDomainMessageHandler;
 
 public class HighriseHandlerTest {
+
+  private HighriseFactory highriseFactory;
 
   @Test
   public void testHandleMessageReturnNotNullResult() throws Exception {
@@ -37,14 +35,13 @@ public class HighriseHandlerTest {
 
   private HighriseHandler getHighriseHandler() {
     UserDataService userDataService = new UserDataService(new Config(), new ObjectMapper());
-    return new HighriseHandler(userDataService, new SubDomainMessageHandler(userDataService));
+    return new HighriseHandler(userDataService, highriseFactory);
   }
 
-  @Ignore
   @Test
   public void testHandleMessageUser() throws Exception {
     UserDataService userDataService = mock(UserDataService.class);
-    HighriseHandler highriseHandler = new HighriseHandler(userDataService, new SubDomainMessageHandler(userDataService));
+    HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory);
 
     final Request request = new Request();
     request.setBot("MyBot");
@@ -55,12 +52,11 @@ public class HighriseHandlerTest {
     assertThat(responses.iterator().next().getMessage(), is("Alright, Your Highrise Subdomain is now set to: xyz"));
   }
 
-  @Ignore
   @Test
   public void testHandleMessagePass() throws Exception {
     UserDataService userDataService = mock(UserDataService.class);
 
-    final HighriseHandler highriseHandler = new HighriseHandler(userDataService, new SubDomainMessageHandler(userDataService));
+    final HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory);
     final Request request = new Request();
     request.setBot("MyBot");
     request.setMessage("/highrise apitoken xyy");
@@ -83,6 +79,18 @@ public class HighriseHandlerTest {
   }
 
   @Test
+  public void testHandleWrongMessage() throws Exception {
+    final HighriseHandler highriseHandler = getHighriseHandler();
+    final Request request = new Request();
+    request.setBot("MyBot");
+    request.setMessage("/highrise illegal");
+    final Collection<Response> responses = highriseHandler.HandleMessage(request);
+    assertThat(responses, is(notNullValue()));
+    assertThat(responses.size(), is(1));
+    assertThat(responses.iterator().next().getMessage(), startsWith("Sorry, I was unable"));
+  }
+
+  @Test
   public void testHandleMessageReturnNoMessageIfPatternNotMatches() throws Exception {
     final HighriseHandler highriseHandler = getHighriseHandler();
     final Request request = new Request();
@@ -93,7 +101,6 @@ public class HighriseHandlerTest {
     assertThat(responses.size(), is(0));
   }
 
-  @Ignore
   @Test
   public void testHandleMessageReturnMessageSetPass() throws Exception {
     final HighriseHandler highriseHandler = getHighriseHandler();
@@ -108,18 +115,6 @@ public class HighriseHandlerTest {
     assertThat(response.getMessage(), startsWith("I am HighriseBot"));
   }
 
-  @Test
-  public void testRegisterHighriseFail() throws Exception {
-    final HighriseHandler highriseHandler = getHighriseHandler();
-    try {
-      Credentials credentials = new Credentials();
-      credentials.setApiKey("s");
-      credentials.setUserName("a");
-      highriseHandler.registerHighriseUser(credentials);
-      fail();
-    } catch (HighriseException e) {
 
-    }
-  }
 
 }
