@@ -16,12 +16,14 @@ import com.algaworks.highrisehq.Highrise;
 import com.algaworks.highrisehq.HighriseException;
 import com.algaworks.highrisehq.bean.Person;
 import com.algaworks.highrisehq.bean.PhoneNumber;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import de.benjaminborbe.bot.agent.MessageHandler;
 import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.agent.Response;
-import de.benjaminborbe.bot.highrise.messagehandler.HelpMessage;
+import de.benjaminborbe.bot.highrise.messagehandler.ApikeyMessageHandler;
+import de.benjaminborbe.bot.highrise.messagehandler.HelpMessageHandler;
+import de.benjaminborbe.bot.highrise.messagehandler.SearchMessageHandler;
+import de.benjaminborbe.bot.highrise.messagehandler.SubDomainMessageHandler;
 
 public class HighriseHandler implements MessageHandler {
 
@@ -31,16 +33,19 @@ public class HighriseHandler implements MessageHandler {
 
   private List<ConversionState> conversionStates = new LinkedList<>();
 
-  private List<HelpMessage> messageHandlers = new ArrayList<>();
+  private List<de.benjaminborbe.bot.highrise.messagehandler.MessageHandler> messageHandlers = new ArrayList<>();
 
   private UserDataService userDataService;
 
   @Inject
-  public HighriseHandler(UserDataService userDataService) {
+  public HighriseHandler(UserDataService userDataService, SubDomainMessageHandler subDomainMessageHandler) {
     this.userDataService = userDataService;
     conversionStates.add(0, new ConversionStateSubdomain());
 
-    messageHandlers.add(new HelpMessage());
+    messageHandlers.add(new HelpMessageHandler());
+    messageHandlers.add(new SubDomainMessageHandler(userDataService));
+    messageHandlers.add(new ApikeyMessageHandler(userDataService));
+    messageHandlers.add(new SearchMessageHandler(userDataService));
 
   }
 
@@ -49,50 +54,23 @@ public class HighriseHandler implements MessageHandler {
 
     final Response response = new Response();
 
-    String message = request.getMessage();
 
-    for (HelpMessage messageHandler : messageHandlers) {
-      if (messageHandler.matches(message)) {
-        response.setMessage(messageHandler.handleMessage(message));
+    for (de.benjaminborbe.bot.highrise.messagehandler.MessageHandler messageHandler : messageHandlers) {
+      if (messageHandler.matches(request.getMessage())) {
+        String message = messageHandler.handleMessage(request);
+        logger.debug(message);
+        response.setMessage(message);
         return Collections.singletonList(response);
       }
     }
 
-    if (message.startsWith("/highrise subdomain")) {
-      String user = message.substring(new String("/highrise subdomain ").length());
 
-      try {
-        userDataService.storeUserName(request.getAuthToken(), user);
-        response.setMessage("Alright, Your Highrise Subdomain is now set to: " + user);
-      } catch (JsonProcessingException e) {
-        e.printStackTrace();
-        response.setMessage(
-            "Sorry, but the storing process of your subdomain failed, unfortunately. I am not smart enough to know why, yet. " + user);
-      }
-
-    } else if (message.startsWith("/highrise apitoken")) {
-      String pass = message.substring(new String("/highrise apitoken ").length());
-      try {
-        userDataService.storeToken(request.getAuthToken(), pass);
-        response.setMessage("Noted. Your API token for Highrise is now set to: " + pass);
-      } catch (JsonProcessingException e) {
-        e.printStackTrace();
-        response.setMessage(
-            "Ouch! Something went terribly wrong. Storing of your API token failed. Unfortunately I have no glue, why this is.");
-      }
-
-    } else if (message.startsWith("/highrise search ")) {
-      searchForPeople(request, response);
-
-    } else {
-      return Collections.emptyList();
-    }
-
-    return Collections.singletonList(response);
+    return Collections.emptyList();
   }
 
   private void searchForPeople(final Request request, final Response response) {
     String searchString = request.getMessage().substring(new String("/highrise search ").length());
+    logger.debug(searchString);
     try {
       Credentials credentials = userDataService.getCredentials(request.getAuthToken());
       Highrise highrise = new Highrise(credentials.getUserName(), credentials.getApiKey());

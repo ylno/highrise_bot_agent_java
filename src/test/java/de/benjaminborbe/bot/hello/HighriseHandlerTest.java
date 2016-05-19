@@ -20,6 +20,7 @@ import de.benjaminborbe.bot.highrise.Config;
 import de.benjaminborbe.bot.highrise.Credentials;
 import de.benjaminborbe.bot.highrise.HighriseHandler;
 import de.benjaminborbe.bot.highrise.UserDataService;
+import de.benjaminborbe.bot.highrise.messagehandler.SubDomainMessageHandler;
 
 public class HighriseHandlerTest {
 
@@ -34,13 +35,14 @@ public class HighriseHandlerTest {
   }
 
   private HighriseHandler getHighriseHandler() {
-    return new HighriseHandler(new UserDataService(new Config(), new ObjectMapper()));
+    UserDataService userDataService = new UserDataService(new Config(), new ObjectMapper());
+    return new HighriseHandler(userDataService, new SubDomainMessageHandler(userDataService));
   }
 
   @Test
   public void testHandleMessageUser() throws Exception {
     UserDataService userDataService = mock(UserDataService.class);
-    HighriseHandler highriseHandler = new HighriseHandler(userDataService);
+    HighriseHandler highriseHandler = new HighriseHandler(userDataService, new SubDomainMessageHandler(userDataService));
 
     final Request request = new Request();
     request.setBot("MyBot");
@@ -55,7 +57,7 @@ public class HighriseHandlerTest {
   public void testHandleMessagePass() throws Exception {
     UserDataService userDataService = mock(UserDataService.class);
 
-    final HighriseHandler highriseHandler = new HighriseHandler(userDataService);
+    final HighriseHandler highriseHandler = new HighriseHandler(userDataService, new SubDomainMessageHandler(userDataService));
     final Request request = new Request();
     request.setBot("MyBot");
     request.setMessage("/highrise apitoken xyy");
@@ -74,7 +76,7 @@ public class HighriseHandlerTest {
     final Collection<Response> responses = highriseHandler.HandleMessage(request);
     assertThat(responses, is(notNullValue()));
     assertThat(responses.size(), is(1));
-    // assertThat(responses.iterator().next().getMessage(), startsWith("problems connecting with highrise"));
+    assertThat(responses.iterator().next().getMessage(), startsWith("problems connecting with highrise"));
   }
 
   @Test
@@ -101,7 +103,6 @@ public class HighriseHandlerTest {
     assertThat(response, is(notNullValue()));
     assertThat(response.getMessage(), startsWith("I am HighriseBot"));
   }
-
 
   @Test
   public void testRegisterHighriseFail() throws Exception {
