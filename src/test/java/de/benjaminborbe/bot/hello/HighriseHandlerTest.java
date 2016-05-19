@@ -4,20 +4,17 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 import java.util.Collection;
 
 import org.junit.Test;
 
-import com.algaworks.highrisehq.HighriseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.agent.Response;
 import de.benjaminborbe.bot.highrise.Config;
-import de.benjaminborbe.bot.highrise.Credentials;
 import de.benjaminborbe.bot.highrise.HighriseHandler;
 import de.benjaminborbe.bot.highrise.UserDataService;
 import de.benjaminborbe.bot.highrise.messagehandler.SubDomainMessageHandler;
@@ -80,6 +77,18 @@ public class HighriseHandlerTest {
   }
 
   @Test
+  public void testHandleWrongMessage() throws Exception {
+    final HighriseHandler highriseHandler = getHighriseHandler();
+    final Request request = new Request();
+    request.setBot("MyBot");
+    request.setMessage("/highrise illegal");
+    final Collection<Response> responses = highriseHandler.HandleMessage(request);
+    assertThat(responses, is(notNullValue()));
+    assertThat(responses.size(), is(1));
+    assertThat(responses.iterator().next().getMessage(), startsWith("Sorry, I was unable"));
+  }
+
+  @Test
   public void testHandleMessageReturnNoMessageIfPatternNotMatches() throws Exception {
     final HighriseHandler highriseHandler = getHighriseHandler();
     final Request request = new Request();
@@ -104,20 +113,6 @@ public class HighriseHandlerTest {
     assertThat(response.getMessage(), startsWith("I am HighriseBot"));
   }
 
-  @Test
-  public void testRegisterHighriseFail() throws Exception {
-    final HighriseHandler highriseHandler = getHighriseHandler();
 
-    try {
-      Credentials credentials = new Credentials();
-      credentials.setApiKey("s");
-      credentials.setUserName("a");
-      highriseHandler.registerHighriseUser(credentials);
-      fail();
-    } catch (HighriseException e) {
-
-    }
-
-  }
 
 }
