@@ -15,11 +15,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.agent.Response;
 import de.benjaminborbe.bot.highrise.Config;
+import de.benjaminborbe.bot.highrise.HighriseFactory;
 import de.benjaminborbe.bot.highrise.HighriseHandler;
 import de.benjaminborbe.bot.highrise.UserDataService;
-import de.benjaminborbe.bot.highrise.messagehandler.SubDomainMessageHandler;
 
 public class HighriseHandlerTest {
+
+  private HighriseFactory highriseFactory;
 
   @Test
   public void testHandleMessageReturnNotNullResult() throws Exception {
@@ -33,13 +35,13 @@ public class HighriseHandlerTest {
 
   private HighriseHandler getHighriseHandler() {
     UserDataService userDataService = new UserDataService(new Config(), new ObjectMapper());
-    return new HighriseHandler(userDataService, new SubDomainMessageHandler(userDataService));
+    return new HighriseHandler(userDataService, highriseFactory);
   }
 
   @Test
   public void testHandleMessageUser() throws Exception {
     UserDataService userDataService = mock(UserDataService.class);
-    HighriseHandler highriseHandler = new HighriseHandler(userDataService, new SubDomainMessageHandler(userDataService));
+    HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory);
 
     final Request request = new Request();
     request.setBot("MyBot");
@@ -54,7 +56,7 @@ public class HighriseHandlerTest {
   public void testHandleMessagePass() throws Exception {
     UserDataService userDataService = mock(UserDataService.class);
 
-    final HighriseHandler highriseHandler = new HighriseHandler(userDataService, new SubDomainMessageHandler(userDataService));
+    final HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory);
     final Request request = new Request();
     request.setBot("MyBot");
     request.setMessage("/highrise apitoken xyy");

@@ -8,24 +8,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.algaworks.highrisehq.Highrise;
-import com.algaworks.highrisehq.HighriseException;
 import com.algaworks.highrisehq.bean.Person;
 import com.algaworks.highrisehq.bean.PhoneNumber;
+import com.algaworks.highrisehq.managers.PeopleManager;
 
 import de.benjaminborbe.bot.agent.Request;
-import de.benjaminborbe.bot.highrise.Credentials;
-import de.benjaminborbe.bot.highrise.UserDataService;
+import de.benjaminborbe.bot.highrise.HighriseFactory;
 
 public class SearchMessageHandler extends MessageHandler {
 
   private static final Logger logger = LoggerFactory.getLogger(SearchMessageHandler.class);
 
-  private UserDataService userDataService;
+  private HighriseFactory highriseFactory;
 
   @Inject
-  public SearchMessageHandler(UserDataService userDataService) {
-
-    this.userDataService = userDataService;
+  public SearchMessageHandler(HighriseFactory highriseFactory) {
+    this.highriseFactory = highriseFactory;
   }
 
   @Override
@@ -45,10 +43,10 @@ public class SearchMessageHandler extends MessageHandler {
     String searchString = request.getMessage().substring(new String("/highrise search ").length());
     logger.debug(searchString);
     try {
-      Credentials credentials = userDataService.getCredentials(request.getAuthToken());
-      Highrise highrise = new Highrise(credentials.getUserName(), credentials.getApiKey());
-      List<Person> persons = highrise.getPeopleManager().searchByCustomField("term", searchString);
-      if (persons.size() == 0) {
+      Highrise highrise = highriseFactory.get(request.getAuthToken());
+      PeopleManager peopleManager = highrise.getPeopleManager();
+      List<Person> persons = peopleManager.searchByCustomField("term", searchString);
+      if (persons == null || persons.size() == 0) {
         return "sorry, i found no results for " + searchString;
       } else {
 
@@ -88,9 +86,8 @@ public class SearchMessageHandler extends MessageHandler {
           return stringBuilder.toString();
         }
       }
-    } catch (HighriseException e) {
-      return "problems connecting with highrise " + e.toString();
     } catch (Exception e) {
+      logger.debug("Exception {}", e);
       return "problems connecting with highrise " + e.toString();
     }
 

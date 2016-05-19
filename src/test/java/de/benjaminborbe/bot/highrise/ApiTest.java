@@ -54,6 +54,30 @@ public class ApiTest {
     }
   }
 
+  @Test
+  public void testAPISearchFail() throws Exception {
+
+    Highrise highrise = getHighrise();
+    if (highrise == null) {
+      return;
+    }
+    List<Person> people = highrise.getPeopleManager().searchByCustomField("term", "martin  sdffsdfds");
+    logger.debug("Size: " + people.size());
+
+    for (Person person : people) {
+      logger.debug("Firstname " + person.getFirstName());
+      logger.debug("Lastname " + person.getLastName());
+      logger.debug("Company " + person.getCompanyName());
+      List<PhoneNumber> phoneNumbers = person.getContactData().getPhoneNumbers();
+
+      for (PhoneNumber phoneNumber : phoneNumbers) {
+        logger.debug("Phone " + phoneNumber.getNumber());
+      }
+
+      logger.debug("id " + person.getId());
+    }
+  }
+
   private Highrise getHighrise() {
     String user = System.getenv("highrise_user");
     String password = System.getenv("highrise_pass");

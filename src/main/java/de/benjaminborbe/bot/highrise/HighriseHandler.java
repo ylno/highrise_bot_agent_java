@@ -34,14 +34,14 @@ public class HighriseHandler implements MessageHandler {
   private UserDataService userDataService;
 
   @Inject
-  public HighriseHandler(UserDataService userDataService, SubDomainMessageHandler subDomainMessageHandler) {
+  public HighriseHandler(UserDataService userDataService, final HighriseFactory highriseFactory) {
     this.userDataService = userDataService;
     conversionStates.add(0, new ConversionStateSubdomain());
 
     messageHandlers.add(new HelpMessageHandler());
     messageHandlers.add(new SubDomainMessageHandler(userDataService));
     messageHandlers.add(new ApikeyMessageHandler(userDataService));
-    messageHandlers.add(new SearchMessageHandler(userDataService));
+    messageHandlers.add(new SearchMessageHandler(highriseFactory));
     messageHandlers.add(new HelpMessageHandler());
     messageHandlers.add(new WrongMessageHandler());
 
