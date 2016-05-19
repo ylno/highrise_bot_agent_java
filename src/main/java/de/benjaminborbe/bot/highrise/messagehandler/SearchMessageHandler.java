@@ -88,21 +88,21 @@ public class SearchMessageHandler extends MessageHandler {
     return "sorry, i found no results for " + searchString;
   }
 
-  private void createShortPersonResult(final StringBuilder stringBuilder, final Person person) {
-    stringBuilder.append(person.getFirstName() + " " + person.getLastName());
+  public void createShortPersonResult(final StringBuilder stringBuilder, final Person person) {
+    stringBuilder.append("\n" + person.getFirstName() + " " + person.getLastName());
     if (person.getContactData() != null && person.getContactData().getEmailAddresses() != null
         && person.getContactData().getEmailAddresses().size() > 0) {
-      stringBuilder.append("\n");
+      stringBuilder.append("\n  ");
       stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
+      stringBuilder.append("\n");
     }
-    stringBuilder.append("\n------------------------------\n");
   }
 
-  private void createLongPersonResult(final Request request, final StringBuilder stringBuilder, final Person person) throws IOException {
-    stringBuilder.append(person.getFirstName() + " " + person.getLastName());
+  public void createLongPersonResult(final Request request, final StringBuilder stringBuilder, final Person person) throws IOException {
+    stringBuilder.append("\n" + person.getFirstName() + " " + person.getLastName());
     if (person.getContactData() != null && person.getContactData().getEmailAddresses() != null
         && person.getContactData().getEmailAddresses().size() > 0) {
-      stringBuilder.append("\nE-Mail:");
+      stringBuilder.append("\nE-Mail: ");
       stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
     }
     if (person.getContactData().getPhoneNumbers().size() > 0) {
@@ -116,6 +116,7 @@ public class SearchMessageHandler extends MessageHandler {
     }
 
     final Credentials credentials = userDataService.getCredentials(request.getAuthToken());
+    stringBuilder.append("\n");
     stringBuilder.append(createDeepLink(person, credentials));
 
     stringBuilder.append("\n------------------------------\n");

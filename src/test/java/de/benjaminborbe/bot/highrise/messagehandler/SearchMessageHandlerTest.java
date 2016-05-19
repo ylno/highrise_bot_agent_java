@@ -11,6 +11,8 @@ import java.util.List;
 import org.junit.Test;
 
 import com.algaworks.highrisehq.Highrise;
+import com.algaworks.highrisehq.bean.ContactData;
+import com.algaworks.highrisehq.bean.EmailAddress;
 import com.algaworks.highrisehq.bean.Person;
 import com.algaworks.highrisehq.managers.PeopleManager;
 
@@ -95,6 +97,61 @@ public class SearchMessageHandlerTest {
     final String ret = searchMessageHandler.createDeepLink(firstPerson, credentials);
 
     assertThat(ret, is("https://subdomainx.highrisehq.com/people/123"));
+
+  }
+
+  @Test
+  public void testCreateShortPersonResult() throws Exception {
+
+    Person person = new Person();
+    person.setFirstName("First");
+    person.setLastName("Last");
+    ContactData contactData = new ContactData();
+    person.setContactData(contactData);
+    ArrayList<EmailAddress> emailAddresses = new ArrayList<>();
+    EmailAddress e = new EmailAddress();
+    e.setAddress("email@test.de");
+    emailAddresses.add(e);
+    contactData.setEmailAddresses(emailAddresses);
+
+    final HighriseFactory highriseFactory = mock(HighriseFactory.class);
+
+    final UserDataService userDataService = mock(UserDataService.class);
+
+    final SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
+    final Request request = new Request();
+    final Credentials credentials = mock(Credentials.class);
+    when(credentials.getUserName()).thenReturn("subdomainx");
+    StringBuilder stringBuilder = new StringBuilder();
+
+    searchMessageHandler.createShortPersonResult(stringBuilder, person);
+
+    assertThat(stringBuilder.toString(), is("\nFirst Last\n  email@test.de\n"));
+
+  }
+
+  @Test
+  public void testCreateShortPersonResultWithoutEmail() throws Exception {
+
+    Person person = new Person();
+    person.setFirstName("First");
+    person.setLastName("Last");
+    ContactData contactData = new ContactData();
+    person.setContactData(contactData);
+
+    final HighriseFactory highriseFactory = mock(HighriseFactory.class);
+
+    final UserDataService userDataService = mock(UserDataService.class);
+
+    final SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
+    final Request request = new Request();
+    final Credentials credentials = mock(Credentials.class);
+    when(credentials.getUserName()).thenReturn("subdomainx");
+    StringBuilder stringBuilder = new StringBuilder();
+
+    searchMessageHandler.createShortPersonResult(stringBuilder, person);
+
+    assertThat(stringBuilder.toString(), is("\nFirst Last"));
 
   }
 }
