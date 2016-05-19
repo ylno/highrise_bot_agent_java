@@ -34,14 +34,14 @@ public class HighriseHandlerTest {
   }
 
   private HighriseHandler getHighriseHandler() {
-    UserDataService userDataService = new UserDataService(new Config(), new ObjectMapper());
+    final UserDataService userDataService = new UserDataService(new Config(), new ObjectMapper());
     return new HighriseHandler(userDataService, highriseFactory);
   }
 
   @Test
   public void testHandleMessageUser() throws Exception {
-    UserDataService userDataService = mock(UserDataService.class);
-    HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory);
+    final UserDataService userDataService = mock(UserDataService.class);
+    final HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory);
 
     final Request request = new Request();
     request.setBot("MyBot");
@@ -54,7 +54,7 @@ public class HighriseHandlerTest {
 
   @Test
   public void testHandleMessagePass() throws Exception {
-    UserDataService userDataService = mock(UserDataService.class);
+    final UserDataService userDataService = mock(UserDataService.class);
 
     final HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory);
     final Request request = new Request();

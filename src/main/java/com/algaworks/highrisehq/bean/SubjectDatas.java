@@ -14,14 +14,14 @@ import javax.xml.bind.annotation.XmlElement;
 public class SubjectDatas {
 
   private String type = "array";
-  private List<SubjectData> datas = new ArrayList<SubjectData>();
+  private List<SubjectData> datas = new ArrayList<>();
 
   @XmlElement(name = "subject_data")
   public List<SubjectData> getDatas() {
     return datas;
   }
 
-  public void setDatas(List<SubjectData> datas) {
+  public void setDatas(final List<SubjectData> datas) {
     this.datas = datas;
   }
 
@@ -30,18 +30,15 @@ public class SubjectDatas {
     return type;
   }
 
-  public void setType(String type) {
+  public void setType(final String type) {
     this.type = type;
   }
 
-  public void removeData(SubjectData subjectData) {
-    for (Iterator<SubjectData> it = datas.iterator(); it.hasNext();) {
-      SubjectData sd = it.next();
-      if (sd.getFieldId().equals(subjectData.getFieldId())) {
-        sd.setId(-sd.getId());
-        sd.setValue("");
-      }
-    }
+  public void removeData(final SubjectData subjectData) {
+    datas.stream().filter(sd -> sd.getFieldId().equals(subjectData.getFieldId())).forEach(sd -> {
+      sd.setId(-sd.getId());
+      sd.setValue("");
+    });
   }
 
 }

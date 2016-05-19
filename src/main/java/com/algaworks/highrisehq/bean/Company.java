@@ -23,7 +23,7 @@ public class Company implements Serializable {
   public Company() {
   }
 
-  public Company(String name) {
+  public Company(final String name) {
     this.name = name;
   }
 
@@ -32,7 +32,7 @@ public class Company implements Serializable {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(final Long id) {
     this.id = id;
   }
 
@@ -41,7 +41,7 @@ public class Company implements Serializable {
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(final String name) {
     this.name = name;
   }
 
@@ -50,7 +50,7 @@ public class Company implements Serializable {
     return background;
   }
 
-  public void setBackground(String background) {
+  public void setBackground(final String background) {
     this.background = background;
   }
 
@@ -59,7 +59,7 @@ public class Company implements Serializable {
     return subjectDatas;
   }
 
-  public void setSubjectDatas(SubjectDatas subjectDatas) {
+  public void setSubjectDatas(final SubjectDatas subjectDatas) {
     this.subjectDatas = subjectDatas;
   }
 
@@ -68,7 +68,7 @@ public class Company implements Serializable {
     return contactData;
   }
 
-  public void setContactData(ContactData contactData) {
+  public void setContactData(final ContactData contactData) {
     this.contactData = contactData;
   }
 

@@ -19,10 +19,10 @@ public class SearchMessageHandler extends MessageHandler {
 
   private static final Logger logger = LoggerFactory.getLogger(SearchMessageHandler.class);
 
-  private HighriseFactory highriseFactory;
+  private final HighriseFactory highriseFactory;
 
   @Inject
-  public SearchMessageHandler(HighriseFactory highriseFactory) {
+  public SearchMessageHandler(final HighriseFactory highriseFactory) {
     this.highriseFactory = highriseFactory;
   }
 
@@ -40,20 +40,20 @@ public class SearchMessageHandler extends MessageHandler {
   }
 
   private String searchForPeople(final Request request) {
-    String searchString = request.getMessage().substring(new String("/highrise search ").length());
+    final String searchString = request.getMessage().substring(new String("/highrise search ").length());
     logger.debug(searchString);
     try {
-      Highrise highrise = highriseFactory.get(request.getAuthToken());
-      PeopleManager peopleManager = highrise.getPeopleManager();
-      List<Person> persons = peopleManager.searchByCustomField("term", searchString);
+      final Highrise highrise = highriseFactory.get(request.getAuthToken());
+      final PeopleManager peopleManager = highrise.getPeopleManager();
+      final List<Person> persons = peopleManager.searchByCustomField("term", searchString);
       if (persons == null || persons.size() == 0) {
         return "sorry, i found no results for " + searchString;
       } else {
 
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("I found " + persons.size() + " contact(s) for you:");
-        boolean extended = persons.size() > 3 ? false : true;
-        for (Person person : persons) {
+        final boolean extended = persons.size() > 3 ? false : true;
+        for (final Person person : persons) {
 
           if (extended) {
             stringBuilder.append(person.getFirstName() + " " + person.getLastName());
@@ -62,7 +62,7 @@ public class SearchMessageHandler extends MessageHandler {
               stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
             }
             if (person.getContactData().getPhoneNumbers().size() > 0) {
-              for (PhoneNumber phoneNumber : person.getContactData().getPhoneNumbers()) {
+              for (final PhoneNumber phoneNumber : person.getContactData().getPhoneNumbers()) {
                 stringBuilder.append("\nPhone: " + phoneNumber.getNumber());
               }
 
@@ -86,9 +86,9 @@ public class SearchMessageHandler extends MessageHandler {
           return stringBuilder.toString();
         }
       }
-    } catch (Exception e) {
-      logger.debug("Exception {}", e);
-      return "problems connecting with highrise " + e.toString();
+    } catch (final Exception e) {
+      logger.debug("Exception", e);
+      return "problems connecting with highrise";
     }
 
     return "sorry, i found no results for " + searchString;

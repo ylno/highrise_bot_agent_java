@@ -22,7 +22,7 @@ public class Errors implements Serializable {
     return error;
   }
 
-  public void setError(String error) {
+  public void setError(final String error) {
     this.error = error;
   }
 

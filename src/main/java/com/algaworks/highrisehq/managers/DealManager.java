@@ -15,17 +15,18 @@ import com.sun.jersey.api.client.WebResource;
  */
 public class DealManager extends HighriseManager {
 
-  public DealManager(WebResource webResource, String authorization) {
+  public DealManager(final WebResource webResource, final String authorization) {
     super(webResource, authorization);
   }
 
   @Override
-  public <T, W extends ListWrapper<T>> List<T> getAsList(Class<T> objectType, Class<W> listWrapType,
-      String path, MultivaluedMap<String, String> params) {
+  public <T, W extends ListWrapper<T>> List<T> getAsList(
+      final Class<T> objectType, final Class<W> listWrapType,
+      final String path, final MultivaluedMap<String, String> params) {
     return super.getAsList(objectType, listWrapType, path, params);
   }
 
-  public void update(Deal deal) {
+  public void update(final Deal deal) {
     this.update(deal, Highrise.DEAL_UPDATE_PATH.replaceAll("#\\{id\\}", deal.getId().toString()));
   }
 

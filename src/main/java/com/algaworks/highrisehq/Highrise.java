@@ -36,17 +36,17 @@ public class Highrise {
   public static final String DEAL_UPDATE_PATH = "deals/#{id}.xml";
   public static final String COMPANY_TAG_PATH = "/companies/#{subject-id}/tags.xml";
 
-  private Client client;
-  private String authorization;
-  private WebResource webResource;
+  private final Client client;
+  private final String authorization;
+  private final WebResource webResource;
 
-  public Highrise(String accountName, String token) {
+  public Highrise(final String accountName, final String token) {
     this.authorization = "Basic " + encodeCredentialsBasic(token, "x");
     this.client = Client.create();
     this.webResource = client.resource("https://" + accountName + ".highrisehq.com");
   }
 
-  public Highrise(String accountName, String token, ClientFilter filter) {
+  public Highrise(final String accountName, final String token, final ClientFilter filter) {
     this(accountName, token);
     this.client.addFilter(filter);
   }
@@ -75,14 +75,14 @@ public class Highrise {
     return new TagManager(this.webResource, this.authorization);
   }
 
-  private static String encodeCredentialsBasic(String username, String password) {
+  private static String encodeCredentialsBasic(final String username, final String password) {
     String encode = username + ":" + password;
-    int paddingCount = (3 - (encode.length() % 3)) % 3;
+    final int paddingCount = (3 - (encode.length() % 3)) % 3;
     encode += "\0\0".substring(0, paddingCount);
-    StringBuilder encoded = new StringBuilder();
+    final StringBuilder encoded = new StringBuilder();
 
     for (int i = 0; i < encode.length(); i += 3) {
-      int j = (encode.charAt(i) << 16) + (encode.charAt(i + 1) << 8)
+      final int j = (encode.charAt(i) << 16) + (encode.charAt(i + 1) << 8)
           + encode.charAt(i + 2);
       encoded.append(BASE64_CHARS.charAt((j >> 18) & 0x3f));
       encoded.append(BASE64_CHARS.charAt((j >> 12) & 0x3f));

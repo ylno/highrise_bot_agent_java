@@ -26,22 +26,22 @@ public class UserDataService {
 
   public static final String HIGHRISE_APIKEY = "highrise_apikey";
 
-  private Config config;
+  private final Config config;
 
-  private ObjectMapper objectMapper;
+  private final ObjectMapper objectMapper;
 
   private String userName;
 
   private String token;
 
   @Inject
-  public UserDataService(Config config, ObjectMapper objectMapper) {
+  public UserDataService(final Config config, final ObjectMapper objectMapper) {
     this.config = config;
     this.objectMapper = objectMapper;
   }
 
-  public Credentials getCredentials(String internalUser) throws IOException {
-    Credentials credentials = new Credentials();
+  public Credentials getCredentials(final String internalUser) throws IOException {
+    final Credentials credentials = new Credentials();
 
     credentials.setUserName(read(internalUser, HIGHRISE_SUBDOMAIN));
     credentials.setApiKey(read(internalUser, HIGHRISE_APIKEY));
@@ -50,55 +50,55 @@ public class UserDataService {
   }
 
   private String read(final String internalUser, final String field) throws IOException {
-    String authPassword = config.getAuthPassword();
-    String authUser = config.getAuthUser();
+    final String authPassword = config.getAuthPassword();
+    final String authUser = config.getAuthUser();
 
-    String apiToken = new String(Base64.getEncoder().encode(new String(authUser + ":" + authPassword).getBytes()));
+    final String apiToken = new String(Base64.getEncoder().encode(new String(authUser + ":" + authPassword).getBytes()));
 
     logger.debug(apiToken);
 
-    ClientConfig clientConfig = new DefaultClientConfig();
-    Client client = Client.create(clientConfig);
+    final ClientConfig clientConfig = new DefaultClientConfig();
+    final Client client = Client.create(clientConfig);
 
-    WebResource webResource = client
+    final WebResource webResource = client
         .resource(UriBuilder.fromUri("http://" + config.getAuthAdress() + "/user/" + internalUser + "/data/" + field).build());
 
-    String response = webResource.header("Authorization", "Bearer " + apiToken).type(MediaType.APPLICATION_FORM_URLENCODED)
+    final String response = webResource.header("Authorization", "Bearer " + apiToken).type(MediaType.APPLICATION_FORM_URLENCODED)
         .get(String.class);
 
-    String value = objectMapper.readValue(response, String.class);
+    final String value = objectMapper.readValue(response, String.class);
     logger.debug("storage respone: {}", response);
     logger.debug("store username: {}", webResource.getURI());
     return value;
   }
 
-  public void storeUserName(String internalUser, String highriseSubDomain) throws JsonProcessingException {
-    String keyToSet = HIGHRISE_SUBDOMAIN;
+  public void storeUserName(final String internalUser, final String highriseSubDomain) throws JsonProcessingException {
+    final String keyToSet = HIGHRISE_SUBDOMAIN;
     storeValue(internalUser, keyToSet, highriseSubDomain);
   }
 
-  public void storeToken(String internalUser, String apiKey) throws JsonProcessingException {
+  public void storeToken(final String internalUser, final String apiKey) throws JsonProcessingException {
 
     storeValue(internalUser, HIGHRISE_APIKEY, apiKey);
   }
 
   private void storeValue(final String internalUser, final String keyToSet, final String value) throws JsonProcessingException {
-    String authPassword = config.getAuthPassword();
-    String authUser = config.getAuthUser();
+    final String authPassword = config.getAuthPassword();
+    final String authUser = config.getAuthUser();
 
-    String apiToken = new String(Base64.getEncoder().encode(new String(authUser + ":" + authPassword).getBytes()));
+    final String apiToken = new String(Base64.getEncoder().encode(new String(authUser + ":" + authPassword).getBytes()));
 
     logger.debug(apiToken);
 
-    ClientConfig clientConfig = new DefaultClientConfig();
-    Client client = Client.create(clientConfig);
-    WebResource webResource = client
+    final ClientConfig clientConfig = new DefaultClientConfig();
+    final Client client = Client.create(clientConfig);
+    final WebResource webResource = client
         .resource(UriBuilder.fromUri("http://" + config.getAuthAdress() + "/user/" + internalUser + "/data/" + keyToSet).build());
 
-    byte[] json;
+    final byte[] json;
     json = objectMapper.writeValueAsBytes(value);
 
-    ClientResponse response = webResource.header("Authorization", "Bearer " + apiToken).type(MediaType.APPLICATION_FORM_URLENCODED)
+    final ClientResponse response = webResource.header("Authorization", "Bearer " + apiToken).type(MediaType.APPLICATION_FORM_URLENCODED)
         .post(ClientResponse.class, json);
 
     logger.debug("storage respone: {}", response);

@@ -17,7 +17,7 @@ public class Tag {
   public Tag() {
   }
 
-  public Tag(String tag, String partyId) {
+  public Tag(final String tag, final String partyId) {
     this.tag = tag;
     this.partyId = partyId;
   }
@@ -27,7 +27,7 @@ public class Tag {
     return tag;
   }
 
-  public void setTag(String tag) {
+  public void setTag(final String tag) {
     this.tag = tag;
   }
 
@@ -36,7 +36,7 @@ public class Tag {
     return partyId;
   }
 
-  public void setPartyId(String partyId) {
+  public void setPartyId(final String partyId) {
     this.partyId = partyId;
   }
 

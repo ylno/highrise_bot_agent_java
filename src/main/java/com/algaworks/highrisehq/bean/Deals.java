@@ -24,7 +24,7 @@ public class Deals implements Serializable, ListWrapper<Deal> {
   }
 
   @Override
-  public void setObjects(List<Deal> objects) {
+  public void setObjects(final List<Deal> objects) {
     this.deals = objects;
   }
 

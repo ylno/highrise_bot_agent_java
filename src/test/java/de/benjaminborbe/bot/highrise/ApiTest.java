@@ -19,34 +19,34 @@ public class ApiTest {
   @Test
   public void testAPI() throws Exception {
 
-    Highrise highrise = getHighrise();
+    final Highrise highrise = getHighrise();
     if (highrise == null) {
       return;
     }
-    List<Person> people = highrise.getPeopleManager().getAll(new Long(0));
+    final List<Person> people = highrise.getPeopleManager().getAll(new Long(0));
     people.size();
 
-    for (Person person : people) {
+    for (final Person person : people) {
       logger.debug("Lastname " + person.getLastName());
     }
   }
 
   @Test
   public void testAPISearch() throws Exception {
-    Highrise highrise = getHighrise();
+    final Highrise highrise = getHighrise();
     if (highrise == null) {
       return;
     }
-    List<Person> people = highrise.getPeopleManager().searchByCustomField("term", "martin");
+    final List<Person> people = highrise.getPeopleManager().searchByCustomField("term", "martin");
     logger.debug("Size: " + people.size());
 
-    for (Person person : people) {
+    for (final Person person : people) {
       logger.debug("Firstname " + person.getFirstName());
       logger.debug("Lastname " + person.getLastName());
       logger.debug("Company " + person.getCompanyName());
-      List<PhoneNumber> phoneNumbers = person.getContactData().getPhoneNumbers();
+      final List<PhoneNumber> phoneNumbers = person.getContactData().getPhoneNumbers();
 
-      for (PhoneNumber phoneNumber : phoneNumbers) {
+      for (final PhoneNumber phoneNumber : phoneNumbers) {
         logger.debug("Phone " + phoneNumber.getNumber());
       }
 
@@ -57,20 +57,20 @@ public class ApiTest {
   @Test
   public void testAPISearchFail() throws Exception {
 
-    Highrise highrise = getHighrise();
+    final Highrise highrise = getHighrise();
     if (highrise == null) {
       return;
     }
-    List<Person> people = highrise.getPeopleManager().searchByCustomField("term", "martin  sdffsdfds");
+    final List<Person> people = highrise.getPeopleManager().searchByCustomField("term", "martin  sdffsdfds");
     logger.debug("Size: " + people.size());
 
-    for (Person person : people) {
+    for (final Person person : people) {
       logger.debug("Firstname " + person.getFirstName());
       logger.debug("Lastname " + person.getLastName());
       logger.debug("Company " + person.getCompanyName());
-      List<PhoneNumber> phoneNumbers = person.getContactData().getPhoneNumbers();
+      final List<PhoneNumber> phoneNumbers = person.getContactData().getPhoneNumbers();
 
-      for (PhoneNumber phoneNumber : phoneNumbers) {
+      for (final PhoneNumber phoneNumber : phoneNumbers) {
         logger.debug("Phone " + phoneNumber.getNumber());
       }
 
@@ -79,8 +79,8 @@ public class ApiTest {
   }
 
   private Highrise getHighrise() {
-    String user = System.getenv("highrise_user");
-    String password = System.getenv("highrise_pass");
+    final String user = System.getenv("highrise_user");
+    final String password = System.getenv("highrise_pass");
 
     if (user == null || user.isEmpty() || password == null || password.isEmpty()) {
       return null;

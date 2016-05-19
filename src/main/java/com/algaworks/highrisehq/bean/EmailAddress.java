@@ -19,7 +19,7 @@ public class EmailAddress implements Serializable {
   public EmailAddress() {
   }
 
-  public EmailAddress(String address, String location) {
+  public EmailAddress(final String address, final String location) {
     super();
     this.address = address;
     this.location = location;
@@ -29,7 +29,7 @@ public class EmailAddress implements Serializable {
     return address;
   }
 
-  public void setAddress(String address) {
+  public void setAddress(final String address) {
     this.address = address;
   }
 
@@ -37,7 +37,7 @@ public class EmailAddress implements Serializable {
     return location;
   }
 
-  public void setLocation(String location) {
+  public void setLocation(final String location) {
     this.location = location;
   }
 
@@ -45,7 +45,7 @@ public class EmailAddress implements Serializable {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(final Long id) {
     this.id = id;
   }
 
@@ -58,14 +58,14 @@ public class EmailAddress implements Serializable {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj)
       return true;
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
       return false;
-    EmailAddress other = (EmailAddress) obj;
+    final EmailAddress other = (EmailAddress) obj;
     if (id == null) {
       if (other.id != null)
         return false;

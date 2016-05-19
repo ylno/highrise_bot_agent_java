@@ -9,10 +9,10 @@ import de.benjaminborbe.bot.highrise.UserDataService;
 
 public class SubDomainMessageHandler extends MessageHandler {
 
-  private UserDataService userDataService;
+  private final UserDataService userDataService;
 
   @Inject
-  public SubDomainMessageHandler(UserDataService userDataService) {
+  public SubDomainMessageHandler(final UserDataService userDataService) {
 
     this.userDataService = userDataService;
   }
@@ -27,12 +27,12 @@ public class SubDomainMessageHandler extends MessageHandler {
 
   @Override
   public String handleMessage(final Request request) {
-    String user = request.getMessage().substring(new String("/highrise subdomain ").length());
+    final String user = request.getMessage().substring(new String("/highrise subdomain ").length());
 
     try {
       userDataService.storeUserName(request.getAuthToken(), user);
       return "Alright, Your Highrise Subdomain is now set to: " + user;
-    } catch (JsonProcessingException e) {
+    } catch (final JsonProcessingException e) {
       e.printStackTrace();
       return "Sorry, but the storing process of your subdomain failed, unfortunately. I am not smart enough to know why, yet. " + user;
     }

@@ -32,30 +32,31 @@ public class PeopleManager extends HighriseManager {
     yyyymmddhhMMss.setTimeZone(new SimpleTimeZone(0, "UTC"));
   }
 
-  public PeopleManager(WebResource webResource, String authorization) {
+  public PeopleManager(final WebResource webResource, final String authorization) {
     super(webResource, authorization);
   }
 
-  public Person get(Long id) {
+  public Person get(final Long id) {
     return this.show(Person.class, Highrise.PEOPLE_UPDATE_PATH.replaceAll("#\\{id\\}", id.toString()));
   }
 
-  public List<Person> getAll(Long offset) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+  public List<Person> getAll(final Long offset) {
+    final MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     params.add("n", offset.toString());
     return this.getAsList(Person.class, People.class, Highrise.PEOPLE_PATH, params);
   }
 
-  public List<Person> since(Date date, Long offset) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+  public List<Person> since(final Date date, final Long offset) {
+    final MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     params.add("since", yyyymmddhhMMss.format(date));
     params.add("n", offset.toString());
     return this.getAsList(Person.class, People.class, Highrise.PEOPLE_PATH, params);
 
   }
 
-  public List<Person> searchByCriteria(String city, String state, String country, String zip, String phone, String email) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+  public List<Person> searchByCriteria(final String city, final String state, final String country, final String zip, final String phone,
+      final String email) {
+    final MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     if (city != null && !city.trim().equals("")) {
       params.add("criteria[city]", city);
     }
@@ -78,8 +79,8 @@ public class PeopleManager extends HighriseManager {
     return this.getAsList(Person.class, People.class, Highrise.PEOPLE_SEARCH_PATH, params);
   }
 
-  public List<Person> searchByCustomField(String customField, String value) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+  public List<Person> searchByCustomField(final String customField, final String value) {
+    final MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     if (customField != null && customField.equals("term")) {
       params.add(customField, value);
     } else if (customField != null && !customField.trim().equals("") && value != null) {
@@ -89,11 +90,11 @@ public class PeopleManager extends HighriseManager {
     return this.getAsList(Person.class, People.class, Highrise.PEOPLE_SEARCH_PATH, params);
   }
 
-  public Person create(Person person) {
+  public Person create(final Person person) {
     return this.create(person, Highrise.PEOPLE_PATH);
   }
 
-  public void update(Person person) {
+  public void update(final Person person) {
     this.update(person, Highrise.PEOPLE_UPDATE_PATH.replaceAll("#\\{id\\}", person.getId().toString()));
   }
 

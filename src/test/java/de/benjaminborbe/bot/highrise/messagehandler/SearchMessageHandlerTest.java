@@ -18,19 +18,19 @@ public class SearchMessageHandlerTest {
   @Test
   public void testHandleMessage() throws Exception {
     final Highrise highrise = mock(Highrise.class);
-    PeopleManager peopleManager = mock(PeopleManager.class);
+    final PeopleManager peopleManager = mock(PeopleManager.class);
     when(highrise.getPeopleManager()).thenReturn(peopleManager);
     when(peopleManager.searchByCustomField("term", "Uwe")).thenReturn(null);
 
-    String token = "secret";
+    final String token = "secret";
     final HighriseFactory highriseFactory = mock(HighriseFactory.class);
     when(highriseFactory.get(token)).thenReturn(highrise);
 
-    SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory);
-    Request request = new Request();
+    final SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory);
+    final Request request = new Request();
     request.setAuthToken(token);
     request.setMessage("/highrise search Uwe");
-    String ret = searchMessageHandler.handleMessage(request);
+    final String ret = searchMessageHandler.handleMessage(request);
 
     assertThat(ret, is("sorry, i found no results for Uwe"));
 

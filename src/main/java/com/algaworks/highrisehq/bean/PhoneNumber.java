@@ -20,7 +20,7 @@ public class PhoneNumber implements Serializable {
   public PhoneNumber() {
   }
 
-  public PhoneNumber(String number, String location) {
+  public PhoneNumber(final String number, final String location) {
     super();
     this.number = number;
     this.location = location;
@@ -30,7 +30,7 @@ public class PhoneNumber implements Serializable {
     return number;
   }
 
-  public void setNumber(String number) {
+  public void setNumber(final String number) {
     this.number = number;
   }
 
@@ -38,7 +38,7 @@ public class PhoneNumber implements Serializable {
     return location;
   }
 
-  public void setLocation(String location) {
+  public void setLocation(final String location) {
     this.location = location;
   }
 
@@ -46,7 +46,7 @@ public class PhoneNumber implements Serializable {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(final Long id) {
     this.id = id;
   }
 
@@ -59,14 +59,14 @@ public class PhoneNumber implements Serializable {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj)
       return true;
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
       return false;
-    PhoneNumber other = (PhoneNumber) obj;
+    final PhoneNumber other = (PhoneNumber) obj;
     if (id == null) {
       if (other.id != null)
         return false;

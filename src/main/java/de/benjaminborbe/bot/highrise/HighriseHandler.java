@@ -25,16 +25,16 @@ public class HighriseHandler implements MessageHandler {
 
   private static final Logger logger = LoggerFactory.getLogger(HighriseHandler.class);
 
-  private HashMap<String, ConversionState> userStates = new HashMap<>();
+  private final HashMap<String, ConversionState> userStates = new HashMap<>();
 
-  private List<ConversionState> conversionStates = new LinkedList<>();
+  private final List<ConversionState> conversionStates = new LinkedList<>();
 
-  private List<de.benjaminborbe.bot.highrise.messagehandler.MessageHandler> messageHandlers = new ArrayList<>();
+  private final List<de.benjaminborbe.bot.highrise.messagehandler.MessageHandler> messageHandlers = new ArrayList<>();
 
-  private UserDataService userDataService;
+  private final UserDataService userDataService;
 
   @Inject
-  public HighriseHandler(UserDataService userDataService, final HighriseFactory highriseFactory) {
+  public HighriseHandler(final UserDataService userDataService, final HighriseFactory highriseFactory) {
     this.userDataService = userDataService;
     conversionStates.add(0, new ConversionStateSubdomain());
 
@@ -53,9 +53,9 @@ public class HighriseHandler implements MessageHandler {
     final Response response = new Response();
 
 
-    for (de.benjaminborbe.bot.highrise.messagehandler.MessageHandler messageHandler : messageHandlers) {
+    for (final de.benjaminborbe.bot.highrise.messagehandler.MessageHandler messageHandler : messageHandlers) {
       if (messageHandler.matches(request.getMessage())) {
-        String message = messageHandler.handleMessage(request);
+        final String message = messageHandler.handleMessage(request);
         logger.debug(message);
         response.setMessage(message);
         return Collections.singletonList(response);

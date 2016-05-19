@@ -24,7 +24,7 @@ public class Notes implements Serializable, ListWrapper<Note> {
   }
 
   @Override
-  public void setObjects(List<Note> objects) {
+  public void setObjects(final List<Note> objects) {
     this.notes = objects;
   }
 

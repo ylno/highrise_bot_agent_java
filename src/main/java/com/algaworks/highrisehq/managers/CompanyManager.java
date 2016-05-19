@@ -16,23 +16,24 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  */
 public class CompanyManager extends HighriseManager {
 
-  public CompanyManager(WebResource webResource, String authorization) {
+  public CompanyManager(final WebResource webResource, final String authorization) {
     super(webResource, authorization);
   }
 
-  public Company create(Company company) {
+  public Company create(final Company company) {
     return this.create(company, Highrise.COMPANY_PATH);
   }
 
-  public List<Company> getAll(Long offset) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+  public List<Company> getAll(final Long offset) {
+    final MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     params.add("n", offset.toString());
     return this.getAsList(Company.class, Companies.class, Highrise.COMPANY_PATH, params);
   }
 
-  public List<Company> searchByCriteria(String basisid, String state, String country, String zip,
-      String phone, String email) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+  public List<Company> searchByCriteria(
+      final String basisid, final String state, final String country, final String zip,
+      final String phone, final String email) {
+    final MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     if (basisid != null && !basisid.trim().equals("")) {
       params.add("criteria[basisid]", basisid);
     }
@@ -55,13 +56,13 @@ public class CompanyManager extends HighriseManager {
     return this.getAsList(Company.class, Companies.class, Highrise.COMPANY_SEARCH_PATH, params);
   }
 
-  public void update(Company company) {
+  public void update(final Company company) {
     this.update(company, Highrise.COMPANY_UPDATE_PATH.replaceAll("#\\{id\\}",
         company.getId().toString()));
   }
 
-  public List<Company> searchByCustomField(String customField, String value, Long offset) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+  public List<Company> searchByCustomField(final String customField, final String value, final Long offset) {
+    final MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     params.add("n", offset.toString());
     if (customField != null && !customField.trim().equals("") && value != null) {
       params.add("criteria[" + customField + "]", value);
@@ -69,7 +70,7 @@ public class CompanyManager extends HighriseManager {
     return this.getAsList(Company.class, Companies.class, Highrise.COMPANY_SEARCH_PATH, params);
   }
 
-  public void destroy(Company company) {
+  public void destroy(final Company company) {
     this.remove(Highrise.COMPANY_UPDATE_PATH.replaceAll("#\\{id\\}", company.getId().toString()));
   }
 

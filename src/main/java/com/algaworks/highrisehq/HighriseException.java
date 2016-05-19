@@ -11,12 +11,12 @@ public class HighriseException extends RuntimeException {
 
   private int statusCode;
 
-  public HighriseException(int statusCode, String message) {
+  public HighriseException(final int statusCode, final String message) {
     super(message);
     this.statusCode = statusCode;
   }
 
-  public HighriseException(String message, Throwable cause) {
+  public HighriseException(final String message, final Throwable cause) {
     super(message, cause);
   }
 
@@ -24,7 +24,7 @@ public class HighriseException extends RuntimeException {
     return statusCode;
   }
 
-  public void setStatusCode(int statusCode) {
+  public void setStatusCode(final int statusCode) {
     this.statusCode = statusCode;
   }
 

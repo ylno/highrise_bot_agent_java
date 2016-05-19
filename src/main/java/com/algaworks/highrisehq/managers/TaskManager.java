@@ -11,11 +11,11 @@ import com.sun.jersey.api.client.WebResource;
  */
 public class TaskManager extends HighriseManager {
 
-  public TaskManager(WebResource webResource, String authorization) {
+  public TaskManager(final WebResource webResource, final String authorization) {
     super(webResource, authorization);
   }
 
-  public Task create(Task task) {
+  public Task create(final Task task) {
     return this.create(task, Highrise.TASKS_PATH);
   }
 

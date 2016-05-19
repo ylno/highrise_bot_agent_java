@@ -17,7 +17,7 @@ public class Address {
   public Address() {
   }
 
-  public Address(String city, String country, String street, String zip, String location) {
+  public Address(final String city, final String country, final String street, final String zip, final String location) {
     this.city = city;
     this.country = country;
     this.street = street;
@@ -29,7 +29,7 @@ public class Address {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(final Long id) {
     this.id = id;
   }
 
@@ -37,7 +37,7 @@ public class Address {
     return city;
   }
 
-  public void setCity(String city) {
+  public void setCity(final String city) {
     this.city = city;
   }
 
@@ -45,7 +45,7 @@ public class Address {
     return country;
   }
 
-  public void setCountry(String country) {
+  public void setCountry(final String country) {
     this.country = country;
   }
 
@@ -53,7 +53,7 @@ public class Address {
     return location;
   }
 
-  public void setLocation(String location) {
+  public void setLocation(final String location) {
     this.location = location;
   }
 
@@ -61,7 +61,7 @@ public class Address {
     return state;
   }
 
-  public void setState(String state) {
+  public void setState(final String state) {
     this.state = state;
   }
 
@@ -69,7 +69,7 @@ public class Address {
     return street;
   }
 
-  public void setStreet(String street) {
+  public void setStreet(final String street) {
     this.street = street;
   }
 
@@ -77,7 +77,7 @@ public class Address {
     return zip;
   }
 
-  public void setZip(String zip) {
+  public void setZip(final String zip) {
     this.zip = zip;
   }
 

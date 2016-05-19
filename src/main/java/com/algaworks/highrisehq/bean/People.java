@@ -18,12 +18,14 @@ public class People implements Serializable, ListWrapper<Person> {
 
   private List<Person> people;
 
+  @Override
   @XmlElement(name = "person")
   public List<Person> getObjects() {
     return people;
   }
 
-  public void setObjects(List<Person> people) {
+  @Override
+  public void setObjects(final List<Person> people) {
     this.people = people;
   }
 

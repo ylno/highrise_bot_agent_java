@@ -20,33 +20,33 @@ import com.sun.jersey.api.client.WebResource;
  */
 public class TagManager extends HighriseManager {
 
-  public TagManager(WebResource webResource, String authorization) {
+  public TagManager(final WebResource webResource, final String authorization) {
     super(webResource, authorization);
   }
 
-  public TagResponse createTag(Tag tag) {
+  public TagResponse createTag(final Tag tag) {
     return create(tag, Highrise.COMPANY_TAG_PATH.replaceAll("#\\{subject-id\\}", tag.getPartyId()));
   }
 
-  protected TagResponse create(Tag tag, String path) {
+  protected TagResponse create(final Tag tag, final String path) {
     TagResponse result = null;
-    ClientResponse response = post(path, tag);
+    final ClientResponse response = post(path, tag);
 
-    String s = response.getEntity(String.class);
+    final String s = response.getEntity(String.class);
 
     if (response.getStatus() == ClientResponse.Status.CREATED.getStatusCode()
         || response.getStatus() == ClientResponse.Status.BAD_REQUEST.getStatusCode()) {
       try {
-        JAXBContext jc = JAXBContext.newInstance(TagResponse.class, Empty.class, Errors.class);
-        Unmarshaller unmarshaller = jc.createUnmarshaller();
-        Object obj = unmarshaller.unmarshal(new StringReader(s));
+        final JAXBContext jc = JAXBContext.newInstance(TagResponse.class, Empty.class, Errors.class);
+        final Unmarshaller unmarshaller = jc.createUnmarshaller();
+        final Object obj = unmarshaller.unmarshal(new StringReader(s));
         if (obj instanceof Errors) {
-          Errors errors = (Errors) obj;
+          final Errors errors = (Errors) obj;
           throw new HighriseException(response.getStatus(), errors.getError());
         } else if (!(obj instanceof Empty)) {
           result = (TagResponse) obj;
         }
-      } catch (JAXBException e) {
+      } catch (final JAXBException e) {
         throw new HighriseException("Error unmarshalling Highrise return.", e);
       }
     } else {

@@ -18,7 +18,7 @@ public class WebAddress implements Serializable {
   public WebAddress() {
   }
 
-  public WebAddress(String number, String location) {
+  public WebAddress(final String number, final String location) {
     this.url = number;
     this.location = location;
   }
@@ -27,7 +27,7 @@ public class WebAddress implements Serializable {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(final Long id) {
     this.id = id;
   }
 
@@ -35,7 +35,7 @@ public class WebAddress implements Serializable {
     return location;
   }
 
-  public void setLocation(String location) {
+  public void setLocation(final String location) {
     this.location = location;
   }
 
@@ -43,7 +43,7 @@ public class WebAddress implements Serializable {
     return url;
   }
 
-  public void setUrl(String number) {
+  public void setUrl(final String number) {
     this.url = number;
   }
 
@@ -56,14 +56,14 @@ public class WebAddress implements Serializable {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj)
       return true;
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
       return false;
-    WebAddress other = (WebAddress) obj;
+    final WebAddress other = (WebAddress) obj;
     if (id == null) {
       if (other.id != null)
         return false;

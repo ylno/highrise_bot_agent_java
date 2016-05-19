@@ -12,19 +12,18 @@ public class UserDataServiceTest {
 
   @Ignore
   @Test
-  @Ignore
   public void testStoreUserName() throws Exception {
 
-    Config config = new Config();
+    final Config config = new Config();
     config.setAuthAdress("localhost:8080");
     config.setAuthUser("auth");
     config.setAuthPassword("test123");
 
-    UserDataService userDataService = new UserDataService(config, new ObjectMapper());
+    final UserDataService userDataService = new UserDataService(config, new ObjectMapper());
     userDataService.storeUserName("dGVsZWdyYW06NzYxMzcyODE=", "hansuser");
     userDataService.storeToken("dGVsZWdyYW06NzYxMzcyODE=", "hanstoken");
 
-    Credentials hans = userDataService.getCredentials("dGVsZWdyYW06NzYxMzcyODE=");
+    final Credentials hans = userDataService.getCredentials("dGVsZWdyYW06NzYxMzcyODE=");
     assertThat(hans.getApiKey(), is("hanstoken"));
     assertThat(hans.getUserName(), is("hansuser"));
 

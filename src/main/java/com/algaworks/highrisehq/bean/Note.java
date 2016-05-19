@@ -30,7 +30,7 @@ public class Note implements Serializable {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(final Long id) {
     this.id = id;
   }
 
@@ -38,7 +38,7 @@ public class Note implements Serializable {
     return body;
   }
 
-  public void setBody(String body) {
+  public void setBody(final String body) {
     this.body = body;
   }
 
@@ -47,7 +47,7 @@ public class Note implements Serializable {
     return subjectId;
   }
 
-  public void setSubjectId(Long subjectId) {
+  public void setSubjectId(final Long subjectId) {
     this.subjectId = subjectId;
   }
 
@@ -56,7 +56,7 @@ public class Note implements Serializable {
     return subjectType;
   }
 
-  public void setSubjectType(SubjectType subjectType) {
+  public void setSubjectType(final SubjectType subjectType) {
     this.subjectType = subjectType;
   }
 
@@ -65,7 +65,7 @@ public class Note implements Serializable {
     return collectionId;
   }
 
-  public void setCollectionId(Long collectionId) {
+  public void setCollectionId(final Long collectionId) {
     this.collectionId = collectionId;
   }
 
@@ -74,7 +74,7 @@ public class Note implements Serializable {
     return collectionType;
   }
 
-  public void setCollectionType(SubjectType collectionType) {
+  public void setCollectionType(final SubjectType collectionType) {
     this.collectionType = collectionType;
   }
 
@@ -83,7 +83,7 @@ public class Note implements Serializable {
     return createdate;
   }
 
-  public void setCreatedate(Date createdate) {
+  public void setCreatedate(final Date createdate) {
     this.createdate = createdate;
   }
 
@@ -96,14 +96,14 @@ public class Note implements Serializable {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj)
       return true;
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Note other = (Note) obj;
+    final Note other = (Note) obj;
     if (id == null) {
       if (other.id != null)
         return false;

@@ -25,34 +25,34 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  */
 public abstract class HighriseManager {
 
-  private WebResource webResource;
-  private String authorization;
+  private final WebResource webResource;
+  private final String authorization;
 
-  public HighriseManager(WebResource webResource, String authorization) {
+  public HighriseManager(final WebResource webResource, final String authorization) {
     super();
     this.webResource = webResource;
     this.authorization = authorization;
   }
 
-  protected <T> T show(Class<T> entity, String path) {
+  protected <T> T show(final Class<T> entity, final String path) {
     T result = null;
-    ClientResponse response = this.get(path, null);
+    final ClientResponse response = this.get(path, null);
 
-    String s = response.getEntity(String.class);
+    final String s = response.getEntity(String.class);
 
     if (response.getStatus() == ClientResponse.Status.OK.getStatusCode()
         || response.getStatus() == ClientResponse.Status.BAD_REQUEST.getStatusCode()) {
       try {
-        JAXBContext jc = JAXBContext.newInstance(entity, Empty.class, Errors.class);
-        Unmarshaller unmarshaller = jc.createUnmarshaller();
-        Object obj = unmarshaller.unmarshal(new StringReader(s));
+        final JAXBContext jc = JAXBContext.newInstance(entity, Empty.class, Errors.class);
+        final Unmarshaller unmarshaller = jc.createUnmarshaller();
+        final Object obj = unmarshaller.unmarshal(new StringReader(s));
         if (obj instanceof Errors) {
-          Errors errors = (Errors) obj;
+          final Errors errors = (Errors) obj;
           throw new HighriseException(response.getStatus(), errors.getError());
         } else if (!(obj instanceof Empty)) {
           result = (T) obj;
         }
-      } catch (JAXBException e) {
+      } catch (final JAXBException e) {
         throw new HighriseException("Error unmarshalling Highrise return.", e);
       }
     } else {
@@ -63,21 +63,21 @@ public abstract class HighriseManager {
     return result;
   }
 
-  protected <T> void update(T entity, String path) {
-    ClientResponse response = this.put(path, entity);
+  protected <T> void update(final T entity, final String path) {
+    final ClientResponse response = this.put(path, entity);
 
-    String s = response.getEntity(String.class);
+    final String s = response.getEntity(String.class);
 
     if (response.getStatus() == ClientResponse.Status.BAD_REQUEST.getStatusCode()) {
       try {
-        JAXBContext jc = JAXBContext.newInstance(Errors.class);
-        Unmarshaller unmarshaller = jc.createUnmarshaller();
-        Object obj = unmarshaller.unmarshal(new StringReader(s));
+        final JAXBContext jc = JAXBContext.newInstance(Errors.class);
+        final Unmarshaller unmarshaller = jc.createUnmarshaller();
+        final Object obj = unmarshaller.unmarshal(new StringReader(s));
         if (obj instanceof Errors) {
-          Errors errors = (Errors) obj;
+          final Errors errors = (Errors) obj;
           throw new HighriseException(response.getStatus(), errors.getError());
         }
-      } catch (JAXBException e) {
+      } catch (final JAXBException e) {
         throw new HighriseException("Error unmarshalling Highrise return.", e);
       }
     } else if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
@@ -87,25 +87,25 @@ public abstract class HighriseManager {
   }
 
   @SuppressWarnings("unchecked")
-  protected <T> T create(T entity, String path) {
+  protected <T> T create(final T entity, final String path) {
     T result = null;
-    ClientResponse response = this.post(path, entity);
+    final ClientResponse response = this.post(path, entity);
 
-    String s = response.getEntity(String.class);
+    final String s = response.getEntity(String.class);
 
     if (response.getStatus() == ClientResponse.Status.CREATED.getStatusCode()
         || response.getStatus() == ClientResponse.Status.BAD_REQUEST.getStatusCode()) {
       try {
-        JAXBContext jc = JAXBContext.newInstance(entity.getClass(), Empty.class, Errors.class);
-        Unmarshaller unmarshaller = jc.createUnmarshaller();
-        Object obj = unmarshaller.unmarshal(new StringReader(s));
+        final JAXBContext jc = JAXBContext.newInstance(entity.getClass(), Empty.class, Errors.class);
+        final Unmarshaller unmarshaller = jc.createUnmarshaller();
+        final Object obj = unmarshaller.unmarshal(new StringReader(s));
         if (obj instanceof Errors) {
-          Errors errors = (Errors) obj;
+          final Errors errors = (Errors) obj;
           throw new HighriseException(response.getStatus(), errors.getError());
         } else if (!(obj instanceof Empty)) {
           result = (T) obj;
         }
-      } catch (JAXBException e) {
+      } catch (final JAXBException e) {
         throw new HighriseException("Error unmarshalling Highrise return.", e);
       }
     } else {
@@ -117,8 +117,8 @@ public abstract class HighriseManager {
   }
 
   @SuppressWarnings("unchecked")
-  protected void remove(String path) {
-    ClientResponse response = this.delete(path);
+  protected void remove(final String path) {
+    final ClientResponse response = this.delete(path);
     if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
       throw new HighriseException(response.getStatus(), "Highrise return not expected ("
           + ClientResponse.Status.fromStatusCode(response.getStatus()) + ").");
@@ -126,24 +126,25 @@ public abstract class HighriseManager {
   }
 
   @SuppressWarnings("unchecked")
-  protected <T, W extends ListWrapper<T>> List<T> getAsList(Class<T> objectType, Class<W> listWrapType, String path,
-      MultivaluedMap<String, String> params) {
-    List<T> result = new ArrayList<T>();
+  protected <T, W extends ListWrapper<T>> List<T> getAsList(
+      final Class<T> objectType, final Class<W> listWrapType, final String path,
+      final MultivaluedMap<String, String> params) {
+    List<T> result = new ArrayList<>();
 
-    ClientResponse response = this.get(path, params);
+    final ClientResponse response = this.get(path, params);
 
     if (response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
       try {
-        String s = response.getEntity(String.class);
+        final String s = response.getEntity(String.class);
         // System.out.println(s);
 
-        JAXBContext jc = JAXBContext.newInstance(listWrapType, Empty.class);
-        Unmarshaller unmarshaller = jc.createUnmarshaller();
-        Object obj = unmarshaller.unmarshal(new StringReader(s));
+        final JAXBContext jc = JAXBContext.newInstance(listWrapType, Empty.class);
+        final Unmarshaller unmarshaller = jc.createUnmarshaller();
+        final Object obj = unmarshaller.unmarshal(new StringReader(s));
         if (!(obj instanceof Empty)) {
           result = ((W) obj).getObjects();
         }
-      } catch (JAXBException e) {
+      } catch (final JAXBException e) {
         throw new HighriseException("Error unmarshalling Highrise return as list.", e);
       }
     } else {
@@ -154,7 +155,7 @@ public abstract class HighriseManager {
     return result;
   }
 
-  private WebResource.Builder getBuilder(String path, MultivaluedMap<String, String> params) {
+  private WebResource.Builder getBuilder(final String path, MultivaluedMap<String, String> params) {
     if (params == null) {
       params = new MultivaluedMapImpl();
     }
@@ -165,24 +166,24 @@ public abstract class HighriseManager {
         .header("Authorization", authorization);
   }
 
-  private ClientResponse get(String path, MultivaluedMap<String, String> params) {
-    WebResource.Builder builder = this.getBuilder(path, params);
+  private ClientResponse get(final String path, final MultivaluedMap<String, String> params) {
+    final WebResource.Builder builder = this.getBuilder(path, params);
 
     return builder.get(ClientResponse.class);
   }
 
-  protected ClientResponse post(String path, Object entity) {
-    WebResource.Builder builder = this.getBuilder(path, null);
+  protected ClientResponse post(final String path, final Object entity) {
+    final WebResource.Builder builder = this.getBuilder(path, null);
     return builder.entity(entity).post(ClientResponse.class);
   }
 
-  private ClientResponse put(String path, Object entity) {
-    WebResource.Builder builder = this.getBuilder(path, null);
+  private ClientResponse put(final String path, final Object entity) {
+    final WebResource.Builder builder = this.getBuilder(path, null);
     return builder.entity(entity).put(ClientResponse.class);
   }
 
-  private ClientResponse delete(String path) {
-    WebResource.Builder builder = this.getBuilder(path, null);
+  private ClientResponse delete(final String path) {
+    final WebResource.Builder builder = this.getBuilder(path, null);
     return builder.delete(ClientResponse.class);
   }
 

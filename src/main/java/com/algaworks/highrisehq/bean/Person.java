@@ -30,7 +30,7 @@ public class Person implements Serializable {
     return firstName;
   }
 
-  public void setFirstName(String firstName) {
+  public void setFirstName(final String firstName) {
     this.firstName = firstName;
   }
 
@@ -39,7 +39,7 @@ public class Person implements Serializable {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(final Long id) {
     this.id = id;
   }
 
@@ -48,7 +48,7 @@ public class Person implements Serializable {
     return title;
   }
 
-  public void setTitle(String title) {
+  public void setTitle(final String title) {
     this.title = title;
   }
 
@@ -57,7 +57,7 @@ public class Person implements Serializable {
     return lastName;
   }
 
-  public void setLastName(String lastName) {
+  public void setLastName(final String lastName) {
     this.lastName = lastName;
   }
 
@@ -66,7 +66,7 @@ public class Person implements Serializable {
     return companyId;
   }
 
-  public void setCompanyId(Long companyId) {
+  public void setCompanyId(final Long companyId) {
     this.companyId = companyId;
   }
 
@@ -75,7 +75,7 @@ public class Person implements Serializable {
     return companyName;
   }
 
-  public void setCompanyName(String companyName) {
+  public void setCompanyName(final String companyName) {
     this.companyName = companyName;
   }
 
@@ -84,7 +84,7 @@ public class Person implements Serializable {
     return contactData;
   }
 
-  public void setContactData(ContactData contactData) {
+  public void setContactData(final ContactData contactData) {
     this.contactData = contactData;
   }
 
@@ -93,7 +93,7 @@ public class Person implements Serializable {
     return subjectDatas;
   }
 
-  public void setSubjectDatas(SubjectDatas subjectDatas) {
+  public void setSubjectDatas(final SubjectDatas subjectDatas) {
     this.subjectDatas = subjectDatas;
   }
 
@@ -102,7 +102,7 @@ public class Person implements Serializable {
     return background;
   }
 
-  public void setBackground(String background) {
+  public void setBackground(final String background) {
     this.background = background;
   }
 
@@ -115,14 +115,14 @@ public class Person implements Serializable {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj)
       return true;
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Person other = (Person) obj;
+    final Person other = (Person) obj;
     if (id == null) {
       if (other.id != null)
         return false;

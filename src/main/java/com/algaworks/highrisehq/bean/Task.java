@@ -20,7 +20,7 @@ public class Task implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private static SimpleDateFormat ISO_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+  private static final SimpleDateFormat ISO_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
   static {
     ISO_DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -41,7 +41,7 @@ public class Task implements Serializable {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(final Long id) {
     this.id = id;
   }
 
@@ -50,7 +50,7 @@ public class Task implements Serializable {
     return subjectId;
   }
 
-  public void setSubjectId(Long subjectId) {
+  public void setSubjectId(final Long subjectId) {
     this.subjectId = subjectId;
   }
 
@@ -59,7 +59,7 @@ public class Task implements Serializable {
     return subjectType;
   }
 
-  public void setSubjectType(SubjectType subjectType) {
+  public void setSubjectType(final SubjectType subjectType) {
     this.subjectType = subjectType;
   }
 
@@ -68,7 +68,7 @@ public class Task implements Serializable {
     return categoryId;
   }
 
-  public void setCategoryId(Long categoryId) {
+  public void setCategoryId(final Long categoryId) {
     this.categoryId = categoryId;
   }
 
@@ -77,11 +77,11 @@ public class Task implements Serializable {
     return dueAt;
   }
 
-  public void setDueAt(String dueAt) {
+  public void setDueAt(final String dueAt) {
     this.dueAt = dueAt;
   }
 
-  public void setDueAt(Date dueAt) {
+  public void setDueAt(final Date dueAt) {
     this.setDueAt(ISO_DATE_FORMAT.format(dueAt));
   }
 
@@ -90,7 +90,7 @@ public class Task implements Serializable {
     return _public;
   }
 
-  public void setPublic(boolean _public) {
+  public void setPublic(final boolean _public) {
     this._public = _public;
   }
 
@@ -98,7 +98,7 @@ public class Task implements Serializable {
     return frame;
   }
 
-  public void setFrame(String frame) {
+  public void setFrame(final String frame) {
     this.frame = frame;
   }
 
@@ -106,7 +106,7 @@ public class Task implements Serializable {
     return body;
   }
 
-  public void setBody(String body) {
+  public void setBody(final String body) {
     this.body = body;
   }
 
@@ -115,7 +115,7 @@ public class Task implements Serializable {
     return ownerId;
   }
 
-  public void setOwnerId(Long ownerId) {
+  public void setOwnerId(final Long ownerId) {
     this.ownerId = ownerId;
   }
 
@@ -124,7 +124,7 @@ public class Task implements Serializable {
     return notify;
   }
 
-  public void setNotify(boolean notify) {
+  public void setNotify(final boolean notify) {
     this.notify = notify;
   }
 
@@ -137,14 +137,14 @@ public class Task implements Serializable {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj)
       return true;
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Task other = (Task) obj;
+    final Task other = (Task) obj;
     if (id == null) {
       if (other.id != null)
         return false;

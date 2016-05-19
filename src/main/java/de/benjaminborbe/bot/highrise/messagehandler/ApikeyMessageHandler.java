@@ -9,10 +9,10 @@ import de.benjaminborbe.bot.highrise.UserDataService;
 
 public class ApikeyMessageHandler extends MessageHandler {
 
-  private UserDataService userDataService;
+  private final UserDataService userDataService;
 
   @Inject
-  public ApikeyMessageHandler(UserDataService userDataService) {
+  public ApikeyMessageHandler(final UserDataService userDataService) {
 
     this.userDataService = userDataService;
   }
@@ -27,11 +27,11 @@ public class ApikeyMessageHandler extends MessageHandler {
 
   @Override
   public String handleMessage(final Request request) {
-    String pass = request.getMessage().substring(new String("/highrise apitoken ").length());
+    final String pass = request.getMessage().substring(new String("/highrise apitoken ").length());
     try {
       userDataService.storeToken(request.getAuthToken(), pass);
       return "Noted. Your API token for Highrise is now set to: " + pass;
-    } catch (JsonProcessingException e) {
+    } catch (final JsonProcessingException e) {
       e.printStackTrace();
       return "Ouch! Something went terribly wrong. Storing of your API token failed. Unfortunately I have no glue, why this is.";
     }

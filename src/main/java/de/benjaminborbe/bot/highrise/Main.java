@@ -27,26 +27,26 @@ public class Main {
       final Address nsqdAddress = Address.fromEnv("NSQD_ADDRESS");
       final Address nsqLookupdAddress = Address.fromEnv("NSQ_LOOKUPD_ADDRESS");
 
-      String auth_application_name = System.getenv(AUTH_APPLICATION_NAME);
+      final String auth_application_name = System.getenv(AUTH_APPLICATION_NAME);
       if (auth_application_name == null || auth_application_name.isEmpty()) {
         System.out.println("param " + AUTH_APPLICATION_NAME + " is missing");
         System.exit(1);
       }
 
-      String auth_application_password = System.getenv(AUTH_APPLICATION_PASSWORD);
+      final String auth_application_password = System.getenv(AUTH_APPLICATION_PASSWORD);
       if (auth_application_password == null || auth_application_password.isEmpty()) {
         System.out.println("param " + AUTH_APPLICATION_PASSWORD + " is missing");
         System.exit(1);
       }
 
-      String auth_address = System.getenv(AUTH_ADDRESS);
+      final String auth_address = System.getenv(AUTH_ADDRESS);
       if (auth_address == null || auth_address.isEmpty()) {
         System.out.println("param " + AUTH_ADDRESS + " is missing");
         System.exit(1);
       }
 
       final Injector injector = Guice.createInjector(new GuiceModule());
-      Config config = injector.getInstance(Config.class);
+      final Config config = injector.getInstance(Config.class);
       config.setAuthPassword(auth_application_password);
       config.setAuthUser(auth_application_name);
       config.setAuthAdress(auth_address);
