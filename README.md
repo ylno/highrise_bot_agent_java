@@ -1,4 +1,4 @@
-# Bot Agent Java Dockerfile
+# Bot Agent Highrise Dockerfile
 
 ## Run
 
