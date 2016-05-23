@@ -1,5 +1,9 @@
 # Highrise Bot
 
+## Build
+
+mvn install
+
 ## Run
 
 ```
