@@ -1,4 +1,4 @@
-package de.benjaminborbe.bot.hello;
+package de.benjaminborbe.bot.highrise;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -14,10 +14,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.agent.Response;
-import de.benjaminborbe.bot.highrise.Config;
-import de.benjaminborbe.bot.highrise.HighriseFactory;
-import de.benjaminborbe.bot.highrise.HighriseHandler;
-import de.benjaminborbe.bot.highrise.UserDataService;
 
 public class HighriseHandlerTest {
 
