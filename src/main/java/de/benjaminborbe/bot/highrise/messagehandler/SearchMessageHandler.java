@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.algaworks.highrisehq.Highrise;
+import com.algaworks.highrisehq.bean.EmailAddress;
 import com.algaworks.highrisehq.bean.Person;
 import com.algaworks.highrisehq.bean.PhoneNumber;
 import com.algaworks.highrisehq.managers.PeopleManager;
@@ -17,6 +18,7 @@ import de.benjaminborbe.bot.agent.Request;
 import de.benjaminborbe.bot.highrise.Credentials;
 import de.benjaminborbe.bot.highrise.HighriseFactory;
 import de.benjaminborbe.bot.highrise.UserDataService;
+import de.benjaminborbe.bot.highrise.UserNotFoundException;
 
 public class SearchMessageHandler extends MessageHandler {
 
@@ -61,67 +63,83 @@ public class SearchMessageHandler extends MessageHandler {
       final PeopleManager peopleManager = highrise.getPeopleManager();
       final List<Person> persons = peopleManager.searchByCustomField("term", searchString);
       if (persons == null || persons.size() == 0) {
-        return "sorry, i found no results for " + searchString;
+        return "sorry, I found no results for " + searchString;
       } else {
 
         final StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("I found " + persons.size() + " contact(s) for you:");
+        stringBuilder.append("I found " + persons.size() + " contact(s) for you:").append("\n");
         final boolean extended = persons.size() > LIMIT_FOR_EXTENDED_OUTPUT ? false : true;
         for (final Person person : persons) {
 
           if (extended) {
-            createLongPersonResult(request, stringBuilder, person);
+            stringBuilder.append(createLongPersonResult(request, person));
           } else {
-
-            createShortPersonResult(stringBuilder, person);
+            stringBuilder.append(createShortPersonResult(person));
           }
 
           stringBuilder.append("\n");
-          return stringBuilder.toString();
         }
+        return stringBuilder.toString();
       }
     } catch (final Exception e) {
       logger.debug("Exception {}", e);
       return "problems connecting with highrise " + e.toString();
     }
 
-    return "sorry, i found no results for " + searchString;
   }
 
-  private void createShortPersonResult(final StringBuilder stringBuilder, final Person person) {
-    stringBuilder.append(person.getFirstName() + " " + person.getLastName());
+  public String createShortPersonResult(final Person person) {
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append(person.getFirstName())
+        .append(" ")
+        .append(person.getLastName())
+        .append("\n");
     if (person.getContactData() != null && person.getContactData().getEmailAddresses() != null
         && person.getContactData().getEmailAddresses().size() > 0) {
-      stringBuilder.append("\n");
-      stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
+      stringBuilder.append("  ")
+          .append(person.getContactData().getEmailAddresses().get(0).getAddress())
+          .append("\n");
     }
-    stringBuilder.append("\n------------------------------\n");
+    return stringBuilder.toString();
   }
 
-  private void createLongPersonResult(final Request request, final StringBuilder stringBuilder, final Person person) throws IOException {
-    stringBuilder.append(person.getFirstName() + " " + person.getLastName());
+  public String createLongPersonResult(final Request request, final Person person) throws IOException, UserNotFoundException {
+
+    StringBuilder stringBuilder = new StringBuilder();
+
+    stringBuilder.append(person.getFirstName())
+        .append(" ")
+        .append(person.getLastName())
+        .append("\n");
+
     if (person.getContactData() != null && person.getContactData().getEmailAddresses() != null
         && person.getContactData().getEmailAddresses().size() > 0) {
-      stringBuilder.append("\nE-Mail:");
-      stringBuilder.append(person.getContactData().getEmailAddresses().get(0).getAddress());
+      stringBuilder.append("E-Mail: \n");
+      for (EmailAddress emailAddress : person.getContactData().getEmailAddresses()) {
+        stringBuilder.append("  ").append(emailAddress.getAddress()).append("\n");
+      }
     }
     if (person.getContactData().getPhoneNumbers().size() > 0) {
+      stringBuilder.append("Phone: \n");
       for (final PhoneNumber phoneNumber : person.getContactData().getPhoneNumbers()) {
-        stringBuilder.append("\nPhone: " + phoneNumber.getNumber());
+        stringBuilder.append("  ").append(phoneNumber.getNumber()).append("\n");
       }
 
     }
-    if (!person.getCompanyName().isEmpty()) {
-      stringBuilder.append("\nCompany: " + person.getCompanyName());
+    if (person.getCompanyName() != null && !person.getCompanyName().isEmpty()) {
+      stringBuilder.append("Company: ").append(person.getCompanyName()).append("\n");
     }
 
     final Credentials credentials = userDataService.getCredentials(request.getAuthToken());
-    stringBuilder.append(createDeepLink(person, credentials));
+    stringBuilder.append(createDeepLink(person, credentials)).append("\n");
 
-    stringBuilder.append("\n------------------------------\n");
+    stringBuilder.append("------------------------------\n");
+    return stringBuilder.toString();
   }
 
   public String createDeepLink(final Person person, final Credentials credentials) {
-    return SCHEME + "://" + credentials.getUserName() + "." + HIGHRISEHQDOMAIN + PEOPLE_PATH + person.getId();
+    String userName = credentials.getUserName();
+    Long id = person.getId();
+    return SCHEME + "://" + userName + "." + HIGHRISEHQDOMAIN + PEOPLE_PATH + id;
   }
 }

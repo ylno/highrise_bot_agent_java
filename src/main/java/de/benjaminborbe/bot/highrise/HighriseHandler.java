@@ -31,11 +31,9 @@ public class HighriseHandler implements MessageHandler {
 
   private final List<de.benjaminborbe.bot.highrise.messagehandler.MessageHandler> messageHandlers = new ArrayList<>();
 
-  private final UserDataService userDataService;
 
   @Inject
   public HighriseHandler(final UserDataService userDataService, final HighriseFactory highriseFactory) {
-    this.userDataService = userDataService;
     conversionStates.add(0, new ConversionStateSubdomain());
 
     messageHandlers.add(new HelpMessageHandler());
