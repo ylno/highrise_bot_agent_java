@@ -39,7 +39,7 @@ public class UserDataService {
 
   public Credentials getCredentials(final String authToken) throws IOException, UserNotFoundException {
 
-    String internalUser = tokenToUsername(authToken);
+    final String internalUser = tokenToUsername(authToken);
 
     final Credentials credentials = new Credentials();
 
@@ -75,14 +75,14 @@ public class UserDataService {
   public void storeUserName(final String authToken, final String highriseSubDomain) throws IOException, UserNotFoundException {
     final String keyToSet = HIGHRISE_SUBDOMAIN;
 
-    String internalUser = tokenToUsername(authToken);
+    final String internalUser = tokenToUsername(authToken);
 
     storeValue(internalUser, keyToSet, highriseSubDomain);
   }
 
   public void storeToken(final String authToken, final String apiKey) throws IOException, UserNotFoundException {
 
-    String internalUser = tokenToUsername(authToken);
+    final String internalUser = tokenToUsername(authToken);
     storeValue(internalUser, HIGHRISE_APIKEY, apiKey);
   }
 
@@ -99,7 +99,7 @@ public class UserDataService {
     final WebResource webResource = client
         .resource(UriBuilder.fromUri("http://" + config.getAuthAdress() + "/login").build());
 
-    String s = "{\"authToken\": \"" + authToken + "\"}";
+    final String s = "{\"authToken\": \"" + authToken + "\"}";
     final byte[] json = s.getBytes("UTF-8");
 
     final ClientResponse response = webResource.header("Authorization", "Bearer " + apiToken).type(MediaType.APPLICATION_FORM_URLENCODED)
@@ -109,7 +109,7 @@ public class UserDataService {
       throw new UserNotFoundException();
     }
 
-    String output = response.getEntity(String.class);
+    final String output = response.getEntity(String.class);
 
     final UserData userData = objectMapper.readValue(output, UserData.class);
 

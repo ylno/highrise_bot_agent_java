@@ -39,7 +39,7 @@ public class SubDomainMessageHandler extends MessageHandler {
     } catch (final java.io.IOException e) {
       logger.debug("storeUserName failed", e);
       return "Sorry, but the storing process of your subdomain failed, unfortunately. I am not smart enough to know why, yet. " + user;
-    } catch (UserNotFoundException e) {
+    } catch (final UserNotFoundException e) {
       return "Your account is not registered please set a username first using /auth register [username]";
     }
   }

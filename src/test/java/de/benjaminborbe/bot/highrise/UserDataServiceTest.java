@@ -20,7 +20,7 @@ public class UserDataServiceTest {
     config.setAuthPassword("test123");
 
     final UserDataService userDataService = new UserDataService(config, new ObjectMapper());
-    String authToken = "dGVzdGVyOnNlY3JldA==";
+    final String authToken = "dGVzdGVyOnNlY3JldA==";
     userDataService.storeUserName(authToken, "hansuser");
     userDataService.storeToken(authToken, "hanstoken");
 
@@ -40,7 +40,7 @@ public class UserDataServiceTest {
     config.setAuthPassword("test123");
 
     final UserDataService userDataService = new UserDataService(config, new ObjectMapper());
-    String authToken = "notexistingAuthToken";
+    final String authToken = "notexistingAuthToken";
     userDataService.storeUserName(authToken, "hansuser");
 
   }
