@@ -38,7 +38,7 @@ public class ApikeyMessageHandler extends MessageHandler {
     } catch (final java.io.IOException e) {
       logger.debug("storeToken failed", e);
       return "Ouch! Something went terribly wrong. Storing of your API token failed. Unfortunately I have no glue, why this is.";
-    } catch (UserNotFoundException e) {
+    } catch (final UserNotFoundException e) {
       return "Your account is not registered please set a username first using /auth register [username]";
     }
   }

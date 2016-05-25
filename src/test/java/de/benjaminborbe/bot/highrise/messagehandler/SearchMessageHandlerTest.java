@@ -104,13 +104,13 @@ public class SearchMessageHandlerTest {
   @Test
   public void testCreateShortPersonResult() throws Exception {
 
-    Person person = new Person();
+    final Person person = new Person();
     person.setFirstName("First");
     person.setLastName("Last");
-    ContactData contactData = new ContactData();
+    final ContactData contactData = new ContactData();
     person.setContactData(contactData);
-    ArrayList<EmailAddress> emailAddresses = new ArrayList<>();
-    EmailAddress e = new EmailAddress();
+    final ArrayList<EmailAddress> emailAddresses = new ArrayList<>();
+    final EmailAddress e = new EmailAddress();
     e.setAddress("email@test.de");
     emailAddresses.add(e);
     contactData.setEmailAddresses(emailAddresses);
@@ -124,7 +124,7 @@ public class SearchMessageHandlerTest {
     final Credentials credentials = mock(Credentials.class);
     when(credentials.getUserName()).thenReturn("subdomainx");
 
-    String shortPersonResult = searchMessageHandler.createShortPersonResult(person);
+    final String shortPersonResult = searchMessageHandler.createShortPersonResult(person);
 
     assertThat(shortPersonResult, is("First Last\n  email@test.de\n"));
 
@@ -133,10 +133,10 @@ public class SearchMessageHandlerTest {
   @Test
   public void testCreateShortPersonResultWithoutEmail() throws Exception {
 
-    Person person = new Person();
+    final Person person = new Person();
     person.setFirstName("First");
     person.setLastName("Last");
-    ContactData contactData = new ContactData();
+    final ContactData contactData = new ContactData();
     person.setContactData(contactData);
 
     final HighriseFactory highriseFactory = mock(HighriseFactory.class);
@@ -147,7 +147,7 @@ public class SearchMessageHandlerTest {
     final Credentials credentials = mock(Credentials.class);
     when(credentials.getUserName()).thenReturn("subdomainx");
 
-    String shortPersonResult = searchMessageHandler.createShortPersonResult(person);
+    final String shortPersonResult = searchMessageHandler.createShortPersonResult(person);
 
     assertThat(shortPersonResult, is("First Last\n"));
 
@@ -156,14 +156,14 @@ public class SearchMessageHandlerTest {
   @Test
   public void testCreateLongPersonResult() throws Exception {
 
-    Person person = new Person();
+    final Person person = new Person();
     person.setId(123L);
     person.setFirstName("First");
     person.setLastName("Last");
-    ContactData contactData = new ContactData();
+    final ContactData contactData = new ContactData();
     person.setContactData(contactData);
-    ArrayList<EmailAddress> emailAddresses = new ArrayList<>();
-    EmailAddress e = new EmailAddress();
+    final ArrayList<EmailAddress> emailAddresses = new ArrayList<>();
+    final EmailAddress e = new EmailAddress();
     e.setAddress("email@test.de");
     emailAddresses.add(e);
     contactData.setEmailAddresses(emailAddresses);
@@ -177,7 +177,7 @@ public class SearchMessageHandlerTest {
     when(credentials.getUserName()).thenReturn("subdomainx");
 
     final Request request = new Request();
-    String shortPersonResult = searchMessageHandler.createLongPersonResult(request, person);
+    final String shortPersonResult = searchMessageHandler.createLongPersonResult(request, person);
 
     assertThat(shortPersonResult,
         is("First Last\nE-Mail: \n  email@test.de\nhttps://subdomainx.highrisehq.com/people/123\n------------------------------\n"));

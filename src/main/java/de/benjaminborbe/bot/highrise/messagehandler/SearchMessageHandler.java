@@ -89,7 +89,7 @@ public class SearchMessageHandler extends MessageHandler {
   }
 
   public String createShortPersonResult(final Person person) {
-    StringBuilder stringBuilder = new StringBuilder();
+    final StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append(person.getFirstName())
         .append(" ")
         .append(person.getLastName())
@@ -105,7 +105,7 @@ public class SearchMessageHandler extends MessageHandler {
 
   public String createLongPersonResult(final Request request, final Person person) throws IOException, UserNotFoundException {
 
-    StringBuilder stringBuilder = new StringBuilder();
+    final StringBuilder stringBuilder = new StringBuilder();
 
     stringBuilder.append(person.getFirstName())
         .append(" ")
@@ -115,7 +115,7 @@ public class SearchMessageHandler extends MessageHandler {
     if (person.getContactData() != null && person.getContactData().getEmailAddresses() != null
         && person.getContactData().getEmailAddresses().size() > 0) {
       stringBuilder.append("E-Mail: \n");
-      for (EmailAddress emailAddress : person.getContactData().getEmailAddresses()) {
+      for (final EmailAddress emailAddress : person.getContactData().getEmailAddresses()) {
         stringBuilder.append("  ").append(emailAddress.getAddress()).append("\n");
       }
     }
@@ -138,8 +138,8 @@ public class SearchMessageHandler extends MessageHandler {
   }
 
   public String createDeepLink(final Person person, final Credentials credentials) {
-    String userName = credentials.getUserName();
-    Long id = person.getId();
+    final String userName = credentials.getUserName();
+    final Long id = person.getId();
     return SCHEME + "://" + userName + "." + HIGHRISEHQDOMAIN + PEOPLE_PATH + id;
   }
 }
