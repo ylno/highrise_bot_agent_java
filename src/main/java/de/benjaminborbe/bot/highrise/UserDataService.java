@@ -30,7 +30,6 @@ public class UserDataService {
 
   private final ObjectMapper objectMapper;
 
-
   @Inject
   public UserDataService(final Config config, final ObjectMapper objectMapper) {
     this.config = config;
@@ -133,12 +132,10 @@ public class UserDataService {
     final WebResource webResource = client
         .resource(UriBuilder.fromUri("http://" + config.getAuthAdress() + "/user/" + internalUser + "/data/" + keyToSet).build());
 
-    final byte[] json;
-    json = objectMapper.writeValueAsBytes(value);
+    final byte[] json = objectMapper.writeValueAsBytes(value);
 
     final ClientResponse response = webResource.header("Authorization", "Bearer " + apiToken).type(MediaType.APPLICATION_FORM_URLENCODED)
         .post(ClientResponse.class, json);
-
 
     logger.debug("storage respone: {}", response);
 
