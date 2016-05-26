@@ -1,8 +1,13 @@
 package de.benjaminborbe.bot.highrise;
 
-public class Config {
+import java.io.Serializable;
+
+public class Config implements Serializable {
+
+  private static final long serialVersionUID = -2440985182111371116L;
 
   private String authUser;
+
   private String authPassword;
 
   private String authAdress;
