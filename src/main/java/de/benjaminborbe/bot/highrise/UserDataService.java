@@ -86,8 +86,8 @@ public class UserDataService {
   }
 
   private String tokenToUsername(final String authToken) throws IOException, UserNotFoundException {
-    final String authPassword = config.getAuthPassword();
     final String authUser = config.getAuthUser();
+    final String authPassword = config.getAuthPassword();
 
     final String apiToken = new String(Base64.getEncoder().encode(new String(authUser + ":" + authPassword).getBytes()));
 
@@ -105,7 +105,7 @@ public class UserDataService {
         .post(ClientResponse.class, json);
 
     if (response.getStatus() == 404) {
-      throw new UserNotFoundException();
+      throw new UserNotFoundException(authToken);
     }
 
     final String output = response.getEntity(String.class);
