@@ -1,8 +1,13 @@
 package de.benjaminborbe.bot.highrise;
 
-public class Credentials {
+import java.io.Serializable;
+
+public class Credentials implements Serializable {
+
+  private static final long serialVersionUID = 7171308877273415744L;
 
   private String userName;
+
   private String apiKey;
 
   public String getUserName() {
