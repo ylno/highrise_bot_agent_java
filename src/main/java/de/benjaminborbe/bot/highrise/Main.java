@@ -1,5 +1,6 @@
 package de.benjaminborbe.bot.highrise;
 
+import de.benjaminborbe.bot.highrise.guice.GuiceModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
