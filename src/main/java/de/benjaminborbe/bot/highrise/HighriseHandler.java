@@ -47,10 +47,7 @@ public class HighriseHandler implements MessageHandler {
 
   @Override
   public Collection<Response> HandleMessage(final Request request) {
-
     final Response response = new Response();
-
-
     for (final de.benjaminborbe.bot.highrise.messagehandler.MessageHandler messageHandler : messageHandlers) {
       if (messageHandler.matches(request.getMessage())) {
         final String message = messageHandler.handleMessage(request);
@@ -59,8 +56,6 @@ public class HighriseHandler implements MessageHandler {
         return Collections.singletonList(response);
       }
     }
-
-
     return Collections.emptyList();
   }
 
