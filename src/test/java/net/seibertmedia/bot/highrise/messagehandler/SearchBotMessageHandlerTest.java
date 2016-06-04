@@ -22,7 +22,7 @@ import net.seibertmedia.bot.highrise.Credentials;
 import net.seibertmedia.bot.highrise.HighriseFactory;
 import net.seibertmedia.bot.highrise.UserDataService;
 
-public class SearchMessageHandlerTest {
+public class SearchBotMessageHandlerTest {
 
   @Test
   public void testHandleMessage() throws Exception {
