@@ -1,4 +1,4 @@
-package de.benjaminborbe.bot.highrise;
+package net.seibertmedia.bot.highrise;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -30,14 +30,15 @@ public class HighriseHandlerTest {
   }
 
   private HighriseHandler getHighriseHandler() {
-    final UserDataService userDataService = new UserDataService(new Config(), new ObjectMapper());
-    return new HighriseHandler(userDataService, highriseFactory);
+    Config config = new Config();
+    final UserDataService userDataService = new UserDataService(config, new ObjectMapper());
+    return new HighriseHandler(userDataService, highriseFactory, config);
   }
 
   @Test
   public void testHandleMessageUser() throws Exception {
     final UserDataService userDataService = mock(UserDataService.class);
-    final HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory);
+    final HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory, new Config());
 
     final Request request = new Request();
     request.setBot("MyBot");
@@ -52,7 +53,7 @@ public class HighriseHandlerTest {
   public void testHandleMessagePass() throws Exception {
     final UserDataService userDataService = mock(UserDataService.class);
 
-    final HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory);
+    final HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory, new Config());
     final Request request = new Request();
     request.setBot("MyBot");
     request.setMessage("/highrise apitoken xyy");
@@ -111,6 +112,35 @@ public class HighriseHandlerTest {
     assertThat(response.getMessage(), startsWith("I am HighriseBot"));
   }
 
+  @Test
+  public void testIsDeniedFalse() throws Exception {
+    final HighriseHandler highriseHandler = getHighriseHandler();
+    final Request request = new Request();
+    assertThat(false, is(highriseHandler.isDenied(request)));
+  }
 
+  @Test
+  public void testIsDeniedEmptyToken() throws Exception {
+    Config config = new Config();
+    final UserDataService userDataService = new UserDataService(config, new ObjectMapper());
+    final HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory, config);
+    config.setAllowedToken("xyz");
+    final Request request = new Request();
+    request.setAuthToken("xyz");
+    assertThat(false, is(highriseHandler.isDenied(request)));
+  }
+
+
+
+  @Test
+  public void testIsDeniedTokenFail() throws Exception {
+    Config config = new Config();
+    final UserDataService userDataService = new UserDataService(config, new ObjectMapper());
+    final HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory, config);
+    config.setAllowedToken("xyza");
+    final Request request = new Request();
+    request.setAuthToken("xyz");
+    assertThat(highriseHandler.isDenied(request), is(true));
+  }
 
 }

@@ -1,4 +1,4 @@
-package de.benjaminborbe.bot.highrise;
+package net.seibertmedia.bot.highrise;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

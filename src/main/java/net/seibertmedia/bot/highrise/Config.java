@@ -1,4 +1,4 @@
-package de.benjaminborbe.bot.highrise;
+package net.seibertmedia.bot.highrise;
 
 import java.io.Serializable;
 
@@ -11,6 +11,8 @@ public class Config implements Serializable {
   private String authPassword;
 
   private String authAdress;
+
+  private String allowedToken;
 
   public void setAuthPassword(final String authPassword) {
     this.authPassword = authPassword;
@@ -34,5 +36,13 @@ public class Config implements Serializable {
 
   public String getAuthAdress() {
     return authAdress;
+  }
+
+  public void setAllowedToken(final String allowedToken) {
+    this.allowedToken = allowedToken;
+  }
+
+  public String getAllowedToken() {
+    return allowedToken;
   }
 }

@@ -1,4 +1,4 @@
-package de.benjaminborbe.bot.highrise;
+package net.seibertmedia.bot.highrise;
 
 public class ConversionStateSubdomain implements ConversionState {
 

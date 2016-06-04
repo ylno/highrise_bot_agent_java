@@ -1,4 +1,4 @@
-package de.benjaminborbe.bot.highrise;
+package net.seibertmedia.bot.highrise;
 
 public interface ConversionState {
 

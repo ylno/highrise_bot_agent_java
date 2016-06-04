@@ -1,4 +1,4 @@
-package de.benjaminborbe.bot.highrise.messagehandler;
+package net.seibertmedia.bot.highrise.messagehandler;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -18,9 +18,9 @@ import com.algaworks.highrisehq.bean.Person;
 import com.algaworks.highrisehq.managers.PeopleManager;
 
 import de.benjaminborbe.bot.agent.Request;
-import de.benjaminborbe.bot.highrise.Credentials;
-import de.benjaminborbe.bot.highrise.HighriseFactory;
-import de.benjaminborbe.bot.highrise.UserDataService;
+import net.seibertmedia.bot.highrise.Credentials;
+import net.seibertmedia.bot.highrise.HighriseFactory;
+import net.seibertmedia.bot.highrise.UserDataService;
 
 public class SearchMessageHandlerTest {
 
@@ -37,7 +37,7 @@ public class SearchMessageHandlerTest {
 
     final UserDataService userDataService = mock(UserDataService.class);
 
-    final SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
+    final SearchBotMessageHandler searchMessageHandler = new SearchBotMessageHandler(highriseFactory, userDataService);
     final Request request = new Request();
     request.setAuthToken(token);
     request.setMessage("/highrise search Uwe");
@@ -70,7 +70,7 @@ public class SearchMessageHandlerTest {
 
     final UserDataService userDataService = mock(UserDataService.class);
 
-    final SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
+    final SearchBotMessageHandler searchMessageHandler = new SearchBotMessageHandler(highriseFactory, userDataService);
     final Request request = new Request();
     request.setAuthToken(token);
     request.setMessage("/highrise search Uwe");
@@ -91,7 +91,7 @@ public class SearchMessageHandlerTest {
 
     final UserDataService userDataService = mock(UserDataService.class);
 
-    final SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
+    final SearchBotMessageHandler searchMessageHandler = new SearchBotMessageHandler(highriseFactory, userDataService);
     final Request request = new Request();
     final Credentials credentials = mock(Credentials.class);
     when(credentials.getUserName()).thenReturn("subdomainx");
@@ -119,7 +119,7 @@ public class SearchMessageHandlerTest {
 
     final UserDataService userDataService = mock(UserDataService.class);
 
-    final SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
+    final SearchBotMessageHandler searchMessageHandler = new SearchBotMessageHandler(highriseFactory, userDataService);
     final Request request = new Request();
     final Credentials credentials = mock(Credentials.class);
     when(credentials.getUserName()).thenReturn("subdomainx");
@@ -143,7 +143,7 @@ public class SearchMessageHandlerTest {
 
     final UserDataService userDataService = mock(UserDataService.class);
 
-    final SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
+    final SearchBotMessageHandler searchMessageHandler = new SearchBotMessageHandler(highriseFactory, userDataService);
     final Credentials credentials = mock(Credentials.class);
     when(credentials.getUserName()).thenReturn("subdomainx");
 
@@ -173,7 +173,7 @@ public class SearchMessageHandlerTest {
     final Credentials credentials = mock(Credentials.class);
     when(userDataService.getCredentials(anyString())).thenReturn(credentials);
 
-    final SearchMessageHandler searchMessageHandler = new SearchMessageHandler(highriseFactory, userDataService);
+    final SearchBotMessageHandler searchMessageHandler = new SearchBotMessageHandler(highriseFactory, userDataService);
     when(credentials.getUserName()).thenReturn("subdomainx");
 
     final Request request = new Request();

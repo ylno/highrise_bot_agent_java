@@ -1,13 +1,13 @@
-package de.benjaminborbe.bot.highrise.guice;
+package net.seibertmedia.bot.highrise.guice;
 
 import javax.inject.Singleton;
 
 import com.google.inject.AbstractModule;
 
 import de.benjaminborbe.bot.agent.MessageHandler;
-import de.benjaminborbe.bot.highrise.Config;
-import de.benjaminborbe.bot.highrise.HighriseFactory;
-import de.benjaminborbe.bot.highrise.HighriseHandler;
+import net.seibertmedia.bot.highrise.Config;
+import net.seibertmedia.bot.highrise.HighriseFactory;
+import net.seibertmedia.bot.highrise.HighriseHandler;
 
 public class GuiceModule extends AbstractModule {
 
