@@ -124,7 +124,7 @@ public class HighriseHandlerTest {
     Config config = new Config();
     final UserDataService userDataService = new UserDataService(config, new ObjectMapper());
     final HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory, config);
-    config.setAllowedToken("xyz");
+    config.setRestrictToTokens("xyz");
     final Request request = new Request();
     request.setAuthToken("xyz");
     assertThat(false, is(highriseHandler.isDenied(request)));
@@ -137,7 +137,7 @@ public class HighriseHandlerTest {
     Config config = new Config();
     final UserDataService userDataService = new UserDataService(config, new ObjectMapper());
     final HighriseHandler highriseHandler = new HighriseHandler(userDataService, highriseFactory, config);
-    config.setAllowedToken("xyza");
+    config.setRestrictToTokens("xyza");
     final Request request = new Request();
     request.setAuthToken("xyz");
     assertThat(highriseHandler.isDenied(request), is(true));

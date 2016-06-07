@@ -12,7 +12,7 @@ public class Config implements Serializable {
 
   private String authAdress;
 
-  private String allowedToken;
+  private String restrictToTokens;
 
   public void setAuthPassword(final String authPassword) {
     this.authPassword = authPassword;
@@ -38,11 +38,11 @@ public class Config implements Serializable {
     return authAdress;
   }
 
-  public void setAllowedToken(final String allowedToken) {
-    this.allowedToken = allowedToken;
+  public void setRestrictToTokens(final String restrictToTokens) {
+    this.restrictToTokens = restrictToTokens;
   }
 
-  public String getAllowedToken() {
-    return allowedToken;
+  public String getRestrictToTokens() {
+    return restrictToTokens;
   }
 }

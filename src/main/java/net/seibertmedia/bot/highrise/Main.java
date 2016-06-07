@@ -22,7 +22,7 @@ public class Main {
 
   public static final String BOT_NAME = "BOT_NAME";
 
-  public static final String ALLOWED_TOKEN = "ALLOWED_TOKEN";
+  public static final String RESTRICT_TO_TOKENS = "RESTRICT_TO_TOKENS";
 
   public static void main(final String[] args) {
     try {
@@ -57,10 +57,10 @@ public class Main {
         System.exit(1);
       }
 
-      final String allowed_token = System.getenv(ALLOWED_TOKEN);
+      final String allowed_token = System.getenv(RESTRICT_TO_TOKENS);
       if (allowed_token != null && !allowed_token.isEmpty()) {
-        System.out.println("param " + ALLOWED_TOKEN );
-        config.setAllowedToken(allowed_token);
+        System.out.println("param " + RESTRICT_TO_TOKENS);
+        config.setRestrictToTokens(allowed_token);
 
       }
 

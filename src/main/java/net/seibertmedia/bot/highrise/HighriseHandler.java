@@ -43,6 +43,7 @@ public class HighriseHandler implements MessageHandler {
   public Collection<Response> HandleMessage(final Request request) {
 
     if(isDenied(request)) {
+      logger.debug("access denied for authtoken {}", request.getAuthToken());
       return Collections.emptyList();
     }
 
@@ -60,11 +61,11 @@ public class HighriseHandler implements MessageHandler {
 
   public boolean isDenied(final Request request) {
 
-    if(config==null || config.getAllowedToken()==null || config.getAllowedToken().isEmpty()) {
+    if(config==null || config.getRestrictToTokens()==null || config.getRestrictToTokens().isEmpty()) {
       return false;
     }
 
-    return  !config.getAllowedToken().equals(request.getAuthToken());
+    return  !config.getRestrictToTokens().equals(request.getAuthToken());
   }
 
 }
